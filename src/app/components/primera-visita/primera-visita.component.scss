@@ -1,0 +1,117 @@
+.primera-visita-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+
+  mat-card {
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+
+  mat-card-header {
+    margin-bottom: 2rem;
+    
+    mat-card-title {
+      font-size: 1.5rem;
+      color: #333;
+    }
+  }
+}
+
+.visita-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  textarea {
+    min-height: 100px;
+  }
+
+  .button-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+}
+
+/* Estilos para tablets */
+@media (max-width: 768px) {
+  .primera-visita-container {
+    margin: 1.5rem auto;
+    
+    mat-card {
+      padding: 1.5rem;
+    }
+
+    mat-card-header {
+      margin-bottom: 1.5rem;
+      
+      mat-card-title {
+        font-size: 1.3rem;
+      }
+    }
+  }
+
+  .visita-form {
+    gap: 0.8rem;
+
+    textarea {
+      min-height: 80px;
+    }
+
+    mat-form-field {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+/* Estilos para móviles */
+@media (max-width: 480px) {
+  .primera-visita-container {
+    margin: 1rem auto;
+    padding: 0.5rem;
+    
+    mat-card {
+      padding: 1rem;
+    }
+
+    mat-card-header {
+      margin-bottom: 1rem;
+      
+      mat-card-title {
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  .visita-form {
+    gap: 0.6rem;
+
+    mat-form-field {
+      font-size: 0.85rem;
+    }
+
+    .button-container {
+      flex-direction: column;
+      gap: 0.5rem;
+
+      button {
+        width: 100%;
+      }
+    }
+
+    textarea {
+      min-height: 60px;
+    }
+
+    .mat-select {
+      font-size: 0.85rem;
+    }
+  }
+}

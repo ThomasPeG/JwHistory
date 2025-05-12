@@ -1,0 +1,68 @@
+<div class="primera-visita-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Primera Visita</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form class="visita-form">
+        <mat-form-field appearance="fill">
+          <mat-label>Fecha</mat-label>
+          <input matInput [matDatepicker]="picker">
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Nombres</mat-label>
+          <input matInput placeholder="Ingrese los nombres">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Pregunta Inicial</mat-label>
+          <textarea matInput placeholder="Ingrese la pregunta inicial"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Dirección</mat-label>
+          <textarea matInput placeholder="Ingrese la dirección"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Tipo de Persona</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let tipo of tiposPersona" [value]="tipo.value">
+              {{tipo.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Inquietud del Amo</mat-label>
+          <textarea matInput placeholder="Ingrese la inquietud"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Datos Personales</mat-label>
+          <textarea matInput placeholder="Ingrese los datos personales"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Pregunta Pendiente</mat-label>
+          <textarea matInput placeholder="Ingrese la pregunta pendiente"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Duración</mat-label>
+          <input matInput type="number" placeholder="Duración en minutos">
+        </mat-form-field>
+
+        <div class="button-container">
+          <button mat-raised-button color="primary">Guardar</button>
+          <button mat-button>Cancelar</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+<p>primera-visita works!</p>
