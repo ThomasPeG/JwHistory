@@ -5,64 +5,84 @@
     </mat-card-header>
     
     <mat-card-content>
-      <form class="visita-form">
+      <form [formGroup]="visitaForm" (ngSubmit)="onSubmit()" class="visita-form">
         <mat-form-field appearance="fill">
           <mat-label>Fecha</mat-label>
-          <input matInput [matDatepicker]="picker">
+          <input matInput [matDatepicker]="picker" formControlName="fecha">
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="visitaForm.get('fecha')?.hasError('required')">
+            La fecha es requerida
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Nombres</mat-label>
-          <input matInput placeholder="Ingrese los nombres">
+          <input matInput formControlName="nombres" placeholder="Ingrese los nombres">
+          <mat-error *ngIf="visitaForm.get('nombres')?.hasError('required')">
+            El nombre es requerido
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Pregunta Inicial</mat-label>
-          <textarea matInput placeholder="Ingrese la pregunta inicial"></textarea>
+          <textarea matInput formControlName="preguntaInicial" placeholder="Ingrese la pregunta inicial"></textarea>
+          <mat-error *ngIf="visitaForm.get('preguntaInicial')?.hasError('required')">
+            La pregunta inicial es requerida
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Dirección</mat-label>
-          <textarea matInput placeholder="Ingrese la dirección"></textarea>
+          <textarea matInput formControlName="direccion" placeholder="Ingrese la dirección"></textarea>
+          <mat-error *ngIf="visitaForm.get('direccion')?.hasError('required')">
+            La dirección es requerida
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Tipo de Persona</mat-label>
-          <mat-select>
+          <mat-select formControlName="tipoPersona">
             <mat-option *ngFor="let tipo of tiposPersona" [value]="tipo.value">
               {{tipo.viewValue}}
             </mat-option>
           </mat-select>
+          <mat-error *ngIf="visitaForm.get('tipoPersona')?.hasError('required')">
+            El tipo de persona es requerido
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Inquietud del Amo</mat-label>
-          <textarea matInput placeholder="Ingrese la inquietud"></textarea>
+          <textarea matInput formControlName="inquietudAmo" placeholder="Ingrese la inquietud"></textarea>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Datos Personales</mat-label>
-          <textarea matInput placeholder="Ingrese los datos personales"></textarea>
+          <textarea matInput formControlName="datosPersonales" placeholder="Ingrese los datos personales"></textarea>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Pregunta Pendiente</mat-label>
-          <textarea matInput placeholder="Ingrese la pregunta pendiente"></textarea>
+          <textarea matInput formControlName="preguntaPendiente" placeholder="Ingrese la pregunta pendiente"></textarea>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Duración</mat-label>
-          <input matInput type="number" placeholder="Duración en minutos">
+          <input matInput type="number" formControlName="duracion" placeholder="Duración en minutos">
+          <mat-error *ngIf="visitaForm.get('duracion')?.hasError('required')">
+            La duración es requerida
+          </mat-error>
+          <mat-error *ngIf="visitaForm.get('duracion')?.hasError('min')">
+            La duración debe ser mayor a 0
+          </mat-error>
         </mat-form-field>
 
         <div class="button-container">
-          <button mat-raised-button color="primary">Guardar</button>
-          <button mat-button>Cancelar</button>
+          <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!visitaForm.valid">Guardar</button>
+          <button mat-button type="button" (click)="onCancel()">Cancelar</button>
         </div>
       </form>
     </mat-card-content>
   </mat-card>
 </div>
-<p>primera-visita works!</p>

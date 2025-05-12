@@ -5,33 +5,41 @@
     </mat-card-header>
     
     <mat-card-content>
-      <form class="revisita-form">
+      <form [formGroup]="revisitaForm" (ngSubmit)="onSubmit()" class="revisita-form">
         <mat-form-field appearance="fill">
           <mat-label>Dirección</mat-label>
-          <textarea matInput placeholder="Ingrese la dirección"></textarea>
+          <textarea matInput formControlName="direccion" placeholder="Ingrese la dirección"></textarea>
+          <mat-error *ngIf="revisitaForm.get('direccion')?.hasError('required')">
+            La dirección es requerida
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Pregunta Pendiente por Responder</mat-label>
-          <textarea matInput placeholder="Ingrese la pregunta pendiente"></textarea>
+          <textarea matInput formControlName="preguntaPendiente" placeholder="Ingrese la pregunta pendiente"></textarea>
+          <mat-error *ngIf="revisitaForm.get('preguntaPendiente')?.hasError('required')">
+            La pregunta pendiente es requerida
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Respuesta ya Analizada</mat-label>
-          <textarea matInput placeholder="Ingrese la respuesta analizada"></textarea>
+          <textarea matInput formControlName="respuestaAnalizada" placeholder="Ingrese la respuesta analizada"></textarea>
+          <mat-error *ngIf="revisitaForm.get('respuestaAnalizada')?.hasError('required')">
+            La respuesta analizada es requerida
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Observaciones</mat-label>
-          <textarea matInput placeholder="Ingrese las observaciones"></textarea>
+          <textarea matInput formControlName="observaciones" placeholder="Ingrese las observaciones"></textarea>
         </mat-form-field>
 
         <div class="button-container">
-          <button mat-raised-button color="primary">Guardar</button>
-          <button mat-button>Cancelar</button>
+          <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!revisitaForm.valid">Guardar</button>
+          <button mat-button type="button" (click)="onCancel()">Cancelar</button>
         </div>
       </form>
     </mat-card-content>
   </mat-card>
 </div>
-<p>revisita works!</p>

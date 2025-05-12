@@ -5,30 +5,38 @@
     </mat-card-header>
     
     <mat-card-content>
-      <form class="investigar-form">
+      <form [formGroup]="investigarForm" (ngSubmit)="onSubmit()" class="investigar-form">
         <mat-form-field appearance="fill">
           <mat-label>Por Investigar</mat-label>
-          <textarea matInput placeholder="Ingrese el tema a investigar"></textarea>
+          <textarea matInput formControlName="porInvestigar" placeholder="Ingrese el tema a investigar"></textarea>
+          <mat-error *ngIf="investigarForm.get('porInvestigar')?.hasError('required')">
+            El tema a investigar es requerido
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Pregunta</mat-label>
-          <textarea matInput placeholder="Ingrese la pregunta"></textarea>
+          <textarea matInput formControlName="pregunta" placeholder="Ingrese la pregunta"></textarea>
+          <mat-error *ngIf="investigarForm.get('pregunta')?.hasError('required')">
+            La pregunta es requerida
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Fecha</mat-label>
-          <input matInput [matDatepicker]="picker">
+          <input matInput [matDatepicker]="picker" formControlName="fecha">
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="investigarForm.get('fecha')?.hasError('required')">
+            La fecha es requerida
+          </mat-error>
         </mat-form-field>
 
         <div class="button-container">
-          <button mat-raised-button color="primary">Guardar</button>
-          <button mat-button>Cancelar</button>
+          <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!investigarForm.valid">Guardar</button>
+          <button mat-button type="button" (click)="onCancel()">Cancelar</button>
         </div>
       </form>
     </mat-card-content>
   </mat-card>
 </div>
-<p>por-investigar works!</p>
