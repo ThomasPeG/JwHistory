@@ -39,3 +39,8 @@ $jwhistory-theme: mat.define-light-theme((
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.main-content {
+  margin-top: 80px;
+  min-height: calc(100vh - 80px);
+}

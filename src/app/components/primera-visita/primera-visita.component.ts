@@ -24,7 +24,7 @@ import { PrimeraVisita } from '../../models/formularios.model';
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
   ],
   templateUrl: './primera-visita.component.html',
   styleUrls: ['./primera-visita.component.scss']
