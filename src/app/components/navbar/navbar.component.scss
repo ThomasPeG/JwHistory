@@ -91,3 +91,53 @@
     }
   }
 }
+
+
+:host ::ng-deep {
+  .p-menubar {
+    background: var(--primary-color);
+    border: none;
+    border-radius: 0;
+    padding: 1rem;
+
+    .p-menubar-start {
+      .logo {
+        color: white;
+        text-decoration: none;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-right: 2rem;
+
+        &:hover {
+          color: var(--primary-100);
+        }
+      }
+    }
+
+    .p-menuitem-link {
+      color: white !important;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+      }
+
+      &.p-menuitem-link-active {
+        background: rgba(255, 255, 255, 0.2) !important;
+      }
+    }
+
+    .p-menubar-button {
+      color: white;
+    }
+  }
+}
+
+@media screen and (max-width: 960px) {
+  :host ::ng-deep {
+    .p-menubar {
+      .p-menubar-button {
+        margin-left: auto;
+      }
+    }
+  }
+}

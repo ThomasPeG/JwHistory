@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { CalendarModule } from 'primeng/calendar';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-estudio',
@@ -15,13 +15,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCardModule,
-    MatDatepickerModule,
-    MatNativeDateModule
+    InputTextModule,
+    InputTextareaModule,
+    CalendarModule,
+    ButtonModule,
+    CardModule,
+    ToastModule
   ],
+  providers: [MessageService],
   templateUrl: './estudio.component.html',
   styleUrls: ['./estudio.component.scss']
 })
@@ -30,13 +31,13 @@ export class EstudioComponent {
 
   constructor(
     private fb: FormBuilder,
-    private snackBar: MatSnackBar
+    private messageService: MessageService
   ) {
     this.estudioForm = this.fb.group({
       nombre: ['', Validators.required],
-      fecha: [''],
-      temaAnalizado: [''],
-      temaPorAnalizar: [''],
+      fecha: ['', Validators.required],
+      temaAnalizado: ['', Validators.required],
+      temaPorAnalizar: ['', Validators.required],
       investigarResponder: ['']
     });
   }
@@ -46,29 +47,28 @@ export class EstudioComponent {
       const estudioData = this.estudioForm.value;
       console.log('Datos del formulario:', estudioData);
       
-      // Aquí iría la llamada al servicio para guardar en el backend
-      // Por ahora mostraremos un mensaje de éxito
-      this.snackBar.open('Estudio guardado con éxito', 'Cerrar', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom'
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Estudio guardado correctamente'
       });
 
-      // Resetear el formulario después de guardar
       this.estudioForm.reset();
     } else {
-      this.snackBar.open('Por favor, complete todos los campos requeridos', 'Cerrar', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom'
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Por favor, complete todos los campos requeridos'
       });
     }
   }
 
   onCancel(): void {
     this.estudioForm.reset();
-    this.snackBar.open('Formulario cancelado', 'Cerrar', {
-      duration: 3000
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Cancelado',
+      detail: 'Formulario cancelado'
     });
   }
 }

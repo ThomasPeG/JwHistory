@@ -1,55 +1,56 @@
-<div class="estudio-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Registro de Estudio</mat-card-title>
-    </mat-card-header>
-    
-    <mat-card-content>
-      <form [formGroup]="estudioForm" (ngSubmit)="onSubmit()" class="estudio-form">
-        <mat-form-field appearance="fill">
-          <mat-label>Nombre</mat-label>
-          <input matInput formControlName="nombre" placeholder="Ingrese el nombre">
-          <mat-error *ngIf="estudioForm.get('nombre')?.hasError('required')">
+<div class="estudio-container animate-in">
+  <div class="form-header">
+    <h1>Registro de Estudio</h1>
+    <p>Registra los detalles del estudio bíblico</p>
+  </div>
+
+  <p-card>
+    <form [formGroup]="estudioForm" (ngSubmit)="onSubmit()" class="estudio-form">
+      <div class="form-grid">
+        <div class="field">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" type="text" pInputText formControlName="nombre" placeholder="Ingrese el nombre" />
+          <small class="p-error" *ngIf="estudioForm.get('nombre')?.invalid && estudioForm.get('nombre')?.touched">
             El nombre es requerido
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Fecha</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="fecha">
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-          <mat-error *ngIf="estudioForm.get('fecha')?.hasError('required')">
-            La fecha es requerida
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Tema Analizado</mat-label>
-          <textarea matInput formControlName="temaAnalizado" placeholder="Ingrese el tema que se analizó"></textarea>
-          <mat-error *ngIf="estudioForm.get('temaAnalizado')?.hasError('required')">
-            El tema analizado es requerido
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Tema por Analizar</mat-label>
-          <textarea matInput formControlName="temaPorAnalizar" placeholder="Ingrese el tema para la próxima visita"></textarea>
-          <mat-error *ngIf="estudioForm.get('temaPorAnalizar')?.hasError('required')">
-            El tema por analizar es requerido
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Investigar/Responder</mat-label>
-          <textarea matInput formControlName="investigarResponder" placeholder="Puntos para investigar o responder"></textarea>
-        </mat-form-field>
-
-        <div class="button-container">
-          <button mat-raised-button color="primary" (click)="onSubmit()" type="submit" [disabled]="!estudioForm.valid">Guardar</button>
-          <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+          </small>
         </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
+
+        <div class="field">
+          <label for="fecha">Fecha</label>
+          <p-calendar id="fecha" formControlName="fecha" [showIcon]="true"></p-calendar>
+          <small class="p-error" *ngIf="estudioForm.get('fecha')?.invalid && estudioForm.get('fecha')?.touched">
+            La fecha es requerida
+          </small>
+        </div>
+
+        <div class="field col-12">
+          <label for="temaAnalizado">Tema Analizado</label>
+          <textarea id="temaAnalizado" pInputTextarea formControlName="temaAnalizado" rows="3" placeholder="Ingrese el tema que se analizó"></textarea>
+          <small class="p-error" *ngIf="estudioForm.get('temaAnalizado')?.invalid && estudioForm.get('temaAnalizado')?.touched">
+            El tema analizado es requerido
+          </small>
+        </div>
+
+        <div class="field col-12">
+          <label for="temaPorAnalizar">Tema por Analizar</label>
+          <textarea id="temaPorAnalizar" pInputTextarea formControlName="temaPorAnalizar" rows="3" placeholder="Ingrese el tema para la próxima visita"></textarea>
+          <small class="p-error" *ngIf="estudioForm.get('temaPorAnalizar')?.invalid && estudioForm.get('temaPorAnalizar')?.touched">
+            El tema por analizar es requerido
+          </small>
+        </div>
+
+        <div class="field col-12">
+          <label for="investigarResponder">Investigar/Responder</label>
+          <textarea id="investigarResponder" pInputTextarea formControlName="investigarResponder" rows="3" placeholder="Puntos para investigar o responder"></textarea>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <p-button type="button" label="Cancelar" (onClick)="onCancel()" styleClass="p-button-text"></p-button>
+        <p-button type="submit" label="Guardar" [disabled]="!estudioForm.valid"></p-button>
+      </div>
+    </form>
+  </p-card>
 </div>
+
+<p-toast></p-toast>

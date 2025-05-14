@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
+import { MenubarModule } from 'primeng/menubar';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-navbar',
@@ -9,19 +10,37 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [
     CommonModule,
     RouterModule,
-    MatIconModule
+    MenubarModule
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
-  isMenuOpen = false;
+  items: MenuItem[];
 
-  toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
-  }
-
-  closeMenu() {
-    this.isMenuOpen = false;
+  constructor() {
+    this.items = [
+      {
+        label: 'Inicio',
+        routerLink: '/',
+        routerLinkActiveOptions: { exact: true }
+      },
+      {
+        label: 'Primera Visita',
+        routerLink: '/primera-visita'
+      },
+      {
+        label: 'Revisitas',
+        routerLink: '/revisita'
+      },
+      {
+        label: 'Estudios',
+        routerLink: '/estudio'
+      },
+      {
+        label: 'Por Investigar',
+        routerLink: '/por-investigar'
+      }
+    ];
   }
 }

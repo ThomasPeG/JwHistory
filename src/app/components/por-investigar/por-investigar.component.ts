@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-por-investigar',
@@ -15,56 +15,59 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCardModule,
-    MatDatepickerModule,
-    MatNativeDateModule
+    InputTextModule,
+    InputTextareaModule,
+    ButtonModule,
+    CardModule,
+    ToastModule,
+    CalendarModule
   ],
+  providers: [MessageService],
   templateUrl: './por-investigar.component.html',
   styleUrls: ['./por-investigar.component.scss']
 })
 export class PorInvestigarComponent {
-  investigarForm: FormGroup;
+  investigacionForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    private snackBar: MatSnackBar
+    private messageService: MessageService
   ) {
-    this.investigarForm = this.fb.group({
-      porInvestigar: ['', Validators.required],
-      pregunta: ['', Validators.required],
-      fecha: ['', Validators.required]
+    this.investigacionForm = this.fb.group({
+      tema: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      fecha: ['', Validators.required],
+      referencias: [''],
+      notas: ['']
     });
   }
 
   onSubmit(): void {
-    if (this.investigarForm.valid) {
-      const investigarData = this.investigarForm.value;
-      console.log('Datos del formulario:', investigarData);
+    if (this.investigacionForm.valid) {
+      console.log('Datos del formulario:', this.investigacionForm.value);
       
-      // Aquí iría la llamada al servicio para guardar en el backend
-      this.snackBar.open('Tema guardado con éxito', 'Cerrar', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom'
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Tema para investigar guardado correctamente'
       });
 
-      this.investigarForm.reset();
+      this.investigacionForm.reset();
     } else {
-      this.snackBar.open('Por favor, complete todos los campos requeridos', 'Cerrar', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom'
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Por favor, complete todos los campos requeridos'
       });
     }
   }
 
   onCancel(): void {
-    this.investigarForm.reset();
-    this.snackBar.open('Formulario cancelado', 'Cerrar', {
-      duration: 3000
+    this.investigacionForm.reset();
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Cancelado',
+      detail: 'Formulario cancelado'
     });
   }
 }

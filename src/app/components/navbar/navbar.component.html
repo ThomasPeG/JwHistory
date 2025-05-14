@@ -1,16 +1,5 @@
-<nav class="navbar">
-  <div class="navbar-brand">
-    <a href="/" class="logo">JW History</a>
-    <button class="menu-toggle" (click)="toggleMenu()">
-      <span class="material-icons">{{ isMenuOpen ? 'close' : 'menu' }}</span>
-    </button>
-  </div>
-
-  <div class="nav-menu" [class.active]="isMenuOpen">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMenu()">Inicio</a>
-    <a routerLink="/primera-visita" routerLinkActive="active" (click)="closeMenu()">Primera Visita</a>
-    <a routerLink="/revisita" routerLinkActive="active" (click)="closeMenu()">Revisitas</a>
-    <a routerLink="/estudio" routerLinkActive="active" (click)="closeMenu()">Estudios</a>
-    <a routerLink="/por-investigar" routerLinkActive="active" (click)="closeMenu()">Por Investigar</a>
-  </div>
-</nav>
+<p-menubar [model]="items">
+    <ng-template pTemplate="start">
+      <a routerLink="/" class="logo">JW History</a>
+    </ng-template>
+  </p-menubar>

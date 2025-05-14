@@ -3,86 +3,78 @@
     <h1>Primera Visita</h1>
     <p>Registra los detalles de tu primera visita</p>
   </div>
-  
+
   <form [formGroup]="visitaForm" (ngSubmit)="onSubmit()" class="visita-form">
     <div class="form-grid">
-      <!-- Nombres y Fecha en la primera fila -->
-      <mat-form-field appearance="outline">
-        <mat-label>Nombres</mat-label>
-        <input matInput formControlName="nombres" placeholder="Ingrese los nombres" required>
-        <mat-error *ngIf="visitaForm.get('nombres')?.hasError('required')">
+      <div class="field">
+        <label for="nombres">Nombres</label>
+        <input id="nombres" type="text" pInputText formControlName="nombres" placeholder="Ingrese los nombres" />
+        <small class="p-error" *ngIf="visitaForm.get('nombres')?.invalid && visitaForm.get('nombres')?.touched">
           Este campo es requerido
-        </mat-error>
-      </mat-form-field>
+        </small>
+      </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="fecha" required>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="visitaForm.get('fecha')?.hasError('required')">
+      <div class="field">
+        <label for="fecha">Fecha</label>
+        <p-calendar id="fecha" formControlName="fecha" [showIcon]="true"></p-calendar>
+        <small class="p-error" *ngIf="visitaForm.get('fecha')?.invalid && visitaForm.get('fecha')?.touched">
           Este campo es requerido
-        </mat-error>
-      </mat-form-field>
+        </small>
+      </div>
 
-       <!-- Duración y Pregunta Pendiente en la última fila -->
-       <mat-form-field appearance="outline">
-        <mat-label>Duración (minutos)</mat-label>
-        <input matInput type="number" formControlName="duracion" placeholder="Ingrese la duración" required>
-        <mat-error *ngIf="visitaForm.get('duracion')?.hasError('required')">
+      <div class="field">
+        <label for="duracion">Duración (minutos)</label>
+        <p-inputNumber id="duracion" formControlName="duracion" [min]="1" placeholder="Ingrese la duración"></p-inputNumber>
+        <small class="p-error" *ngIf="visitaForm.get('duracion')?.invalid && visitaForm.get('duracion')?.touched">
+          Este campo es requerido y debe ser mayor a 0
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="tipoPersona">Tipo de Persona</label>
+        <p-dropdown id="tipoPersona" [options]="tiposPersona" formControlName="tipoPersona" placeholder="Seleccione un tipo"></p-dropdown>
+        <small class="p-error" *ngIf="visitaForm.get('tipoPersona')?.invalid && visitaForm.get('tipoPersona')?.touched">
           Este campo es requerido
-        </mat-error>
-      </mat-form-field>
+        </small>
+      </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Tipo de Persona</mat-label>
-        <mat-select formControlName="tipoPersona" required>
-          <mat-option value="ateo">Ateo</mat-option>
-          <mat-option value="cristiano">Cristiano</mat-option>
-          <mat-option value="catolico">Católico</mat-option>
-        </mat-select>
-        <mat-error *ngIf="visitaForm.get('tipoPersona')?.hasError('required')">
+      <div class="field col-12">
+        <label for="preguntaInicial">Pregunta Inicial</label>
+        <textarea id="preguntaInicial" pInputTextarea formControlName="preguntaInicial" rows="3" placeholder="Ingrese la pregunta inicial"></textarea>
+        <small class="p-error" *ngIf="visitaForm.get('preguntaInicial')?.invalid && visitaForm.get('preguntaInicial')?.touched">
           Este campo es requerido
-        </mat-error>
-      </mat-form-field>
+        </small>
+      </div>
 
-      <!-- Campos que ocupan todo el ancho -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Pregunta Inicial</mat-label>
-        <textarea matInput formControlName="preguntaInicial" placeholder="Ingrese la pregunta inicial" required></textarea>
-        <mat-error *ngIf="visitaForm.get('preguntaInicial')?.hasError('required')">
+      <div class="field col-12">
+        <label for="inquietudAmo">Inquietud AMO</label>
+        <textarea id="inquietudAmo" pInputTextarea formControlName="inquietudAmo" rows="3" placeholder="Ingrese la inquietud AMO"></textarea>
+      </div>
+
+      <div class="field col-12">
+        <label for="datosPersonales">Datos Personales</label>
+        <textarea id="datosPersonales" pInputTextarea formControlName="datosPersonales" rows="3" placeholder="Ingrese datos personales adicionales"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="direccion">Dirección</label>
+        <textarea id="direccion" pInputTextarea formControlName="direccion" rows="3" placeholder="Ingrese la dirección"></textarea>
+        <small class="p-error" *ngIf="visitaForm.get('direccion')?.invalid && visitaForm.get('direccion')?.touched">
           Este campo es requerido
-        </mat-error>
-      </mat-form-field>
+        </small>
+      </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Inquietud AMO</mat-label>
-        <textarea matInput formControlName="inquietudAmo" placeholder="Ingrese la inquietud AMO"></textarea>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Datos Personales</mat-label>
-        <textarea matInput formControlName="datosPersonales" placeholder="Ingrese datos personales adicionales"></textarea>
-      </mat-form-field>
-
-       <!-- Dirección y Tipo de Persona en la segunda fila -->
-       <mat-form-field appearance="outline">
-        <mat-label>Dirección</mat-label>
-        <textarea matInput formControlName="direccion" placeholder="Ingrese la dirección" required></textarea>
-        <mat-error *ngIf="visitaForm.get('direccion')?.hasError('required')">
-          Este campo es requerido
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Pregunta Pendiente</mat-label>
-        <textarea matInput formControlName="preguntaPendiente" placeholder="Ingrese la pregunta pendiente"></textarea>
-      </mat-form-field>
+      <div class="field">
+        <label for="preguntaPendiente">Pregunta Pendiente</label>
+        <textarea id="preguntaPendiente" pInputTextarea formControlName="preguntaPendiente" rows="3" placeholder="Ingrese la pregunta pendiente"></textarea>
+      </div>
     </div>
 
     <div class="button-container">
-      <button mat-button type="button" (click)="onCancel()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="!visitaForm.valid">Guardar</button>
+      <p-button type="button" label="Cancelar" (onClick)="onCancel()" styleClass="p-button-text"></p-button>
+      <p-button type="submit" label="Guardar" [disabled]="!visitaForm.valid"></p-button>
     </div>
   </form>
 </div>
+
+<p-toast></p-toast>

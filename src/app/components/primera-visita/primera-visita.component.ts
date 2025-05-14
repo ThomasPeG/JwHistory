@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { ButtonModule } from 'primeng/button';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 import { PrimeraVisitaService } from '../../services/primera-visita.service';
 import { PrimeraVisita } from '../../models/formularios.model';
 
@@ -18,28 +18,29 @@ import { PrimeraVisita } from '../../models/formularios.model';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatButtonModule,
-    MatCardModule,
+    InputTextModule,
+    InputTextareaModule,
+    DropdownModule,
+    CalendarModule,
+    ButtonModule,
+    InputNumberModule,
+    ToastModule
   ],
+  providers: [MessageService],
   templateUrl: './primera-visita.component.html',
   styleUrls: ['./primera-visita.component.scss']
 })
 export class PrimeraVisitaComponent {
   visitaForm: FormGroup;
   tiposPersona = [
-    { value: 'ateo', viewValue: 'Ateo' },
-    { value: 'cristiano', viewValue: 'Cristiano' },
-    { value: 'catolico', viewValue: 'Católico' }
+    { label: 'Ateo', value: 'ateo' },
+    { label: 'Cristiano', value: 'cristiano' },
+    { label: 'Católico', value: 'catolico' }
   ];
 
   constructor(
     private fb: FormBuilder,
-    private snackBar: MatSnackBar,
+    private messageService: MessageService,
     private primeraVisitaService: PrimeraVisitaService
   ) {
     this.visitaForm = this.fb.group({
@@ -61,28 +62,31 @@ export class PrimeraVisitaComponent {
       
       this.primeraVisitaService.crearPrimeraVisita(visitaData).subscribe({
         next: (response) => {
-          this.snackBar.open('Visita guardada con éxito', 'Cerrar', {
-            duration: 3000,
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom'
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Visita guardada correctamente'
           });
           this.visitaForm.reset();
         },
         error: (error) => {
           console.error('Error al guardar la visita:', error);
-          this.snackBar.open('Error al guardar la visita', 'Cerrar', {
-            duration: 3000,
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom'
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error al guardar la visita'
           });
         }
       });
     }
   }
+
   onCancel(): void {
     this.visitaForm.reset();
-    this.snackBar.open('Formulario cancelado', 'Cerrar', {
-      duration: 3000
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Cancelado',
+      detail: 'Formulario cancelado'
     });
   }
 }

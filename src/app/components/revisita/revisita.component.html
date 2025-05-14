@@ -1,45 +1,59 @@
-<div class="revisita-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Revisita</mat-card-title>
-    </mat-card-header>
-    
-    <mat-card-content>
-      <form [formGroup]="revisitaForm" (ngSubmit)="onSubmit()" class="revisita-form">
-        <mat-form-field appearance="fill">
-          <mat-label>Dirección</mat-label>
-          <textarea matInput formControlName="direccion" placeholder="Ingrese la dirección"></textarea>
-          <mat-error *ngIf="revisitaForm.get('direccion')?.hasError('required')">
-            La dirección es requerida
-          </mat-error>
-        </mat-form-field>
+<div class="revisita-container animate-in">
+  <div class="form-header">
+    <h1>Registro de Revisita</h1>
+    <p>Registra los detalles de tu revisita</p>
+  </div>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Pregunta Pendiente por Responder</mat-label>
-          <textarea matInput formControlName="preguntaPendiente" placeholder="Ingrese la pregunta pendiente"></textarea>
-          <mat-error *ngIf="revisitaForm.get('preguntaPendiente')?.hasError('required')">
-            La pregunta pendiente es requerida
-          </mat-error>
-        </mat-form-field>
+  <form [formGroup]="revisitaForm" (ngSubmit)="onSubmit()" class="revisita-form">
+    <div class="form-grid">
+      <div class="field col-12 md:col-6">
+        <label for="fecha">Fecha</label>
+        <p-calendar id="fecha" formControlName="fecha" [showIcon]="true"></p-calendar>
+        <small class="p-error" *ngIf="revisitaForm.get('fecha')?.invalid && revisitaForm.get('fecha')?.touched">
+          La fecha es requerida
+        </small>
+      </div>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Respuesta ya Analizada</mat-label>
-          <textarea matInput formControlName="respuestaAnalizada" placeholder="Ingrese la respuesta analizada"></textarea>
-          <mat-error *ngIf="revisitaForm.get('respuestaAnalizada')?.hasError('required')">
-            La respuesta analizada es requerida
-          </mat-error>
-        </mat-form-field>
+      <div class="field col-12 md:col-6">
+        <label for="duracion">Duración (minutos)</label>
+        <p-inputNumber id="duracion" formControlName="duracion" [min]="1" placeholder="Ingrese la duración"></p-inputNumber>
+        <small class="p-error" *ngIf="revisitaForm.get('duracion')?.invalid && revisitaForm.get('duracion')?.touched">
+          La duración es requerida y debe ser mayor a 0
+        </small>
+      </div>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Observaciones</mat-label>
-          <textarea matInput formControlName="observaciones" placeholder="Ingrese las observaciones"></textarea>
-        </mat-form-field>
+      <div class="field col-12">
+        <label for="temaAnalizado">Tema Analizado</label>
+        <textarea id="temaAnalizado" pInputTextarea formControlName="temaAnalizado" rows="3" placeholder="Describa el tema analizado"></textarea>
+        <small class="p-error" *ngIf="revisitaForm.get('temaAnalizado')?.invalid && revisitaForm.get('temaAnalizado')?.touched">
+          El tema analizado es requerido
+        </small>
+      </div>
 
-        <div class="button-container">
-          <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!revisitaForm.valid">Guardar</button>
-          <button mat-button type="button" (click)="onCancel()">Cancelar</button>
-        </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
+      <div class="field col-12">
+        <label for="temaPorAnalizar">Tema por Analizar</label>
+        <textarea id="temaPorAnalizar" pInputTextarea formControlName="temaPorAnalizar" rows="3" placeholder="Describa el tema para la próxima visita"></textarea>
+        <small class="p-error" *ngIf="revisitaForm.get('temaPorAnalizar')?.invalid && revisitaForm.get('temaPorAnalizar')?.touched">
+          El tema por analizar es requerido
+        </small>
+      </div>
+
+      <div class="field col-12">
+        <label for="observaciones">Observaciones</label>
+        <textarea id="observaciones" pInputTextarea formControlName="observaciones" rows="3" placeholder="Ingrese observaciones adicionales"></textarea>
+      </div>
+
+      <div class="field col-12">
+        <label for="preguntaPendiente">Pregunta Pendiente</label>
+        <textarea id="preguntaPendiente" pInputTextarea formControlName="preguntaPendiente" rows="3" placeholder="Ingrese preguntas pendientes"></textarea>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <p-button type="button" label="Cancelar" (onClick)="onCancel()" styleClass="p-button-text"></p-button>
+      <p-button type="submit" label="Guardar" [disabled]="!revisitaForm.valid"></p-button>
+    </div>
+  </form>
 </div>
+
+<p-toast></p-toast>

@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { CalendarModule } from 'primeng/calendar';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-revisita',
@@ -13,11 +16,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCardModule
+    InputTextModule,
+    InputTextareaModule,
+    ButtonModule,
+    CardModule,
+    ToastModule,
+    CalendarModule,
+    InputNumberModule
   ],
+  providers: [MessageService],
   templateUrl: './revisita.component.html',
   styleUrls: ['./revisita.component.scss']
 })
@@ -26,41 +33,44 @@ export class RevisitaComponent {
 
   constructor(
     private fb: FormBuilder,
-    private snackBar: MatSnackBar
+    private messageService: MessageService
   ) {
     this.revisitaForm = this.fb.group({
-      direccion: ['', Validators.required],
-      preguntaPendiente: ['', Validators.required],
-      respuestaAnalizada: ['', Validators.required],
-      observaciones: ['']
+      fecha: ['', Validators.required],
+      duracion: ['', [Validators.required, Validators.min(1)]],
+      temaAnalizado: ['', Validators.required],
+      temaPorAnalizar: ['', Validators.required],
+      observaciones: [''],
+      preguntaPendiente: ['']
     });
   }
 
   onSubmit(): void {
     if (this.revisitaForm.valid) {
-      const revisitaData = this.revisitaForm.value;
-      console.log('Datos del formulario:', revisitaData);
+      console.log('Datos del formulario:', this.revisitaForm.value);
       
-      this.snackBar.open('Revisita guardada con éxito', 'Cerrar', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom'
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Revisita guardada correctamente'
       });
 
       this.revisitaForm.reset();
     } else {
-      this.snackBar.open('Por favor, complete todos los campos requeridos', 'Cerrar', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom'
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Por favor, complete todos los campos requeridos'
       });
     }
   }
 
   onCancel(): void {
     this.revisitaForm.reset();
-    this.snackBar.open('Formulario cancelado', 'Cerrar', {
-      duration: 3000
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Cancelado',
+      detail: 'Formulario cancelado'
     });
   }
 }

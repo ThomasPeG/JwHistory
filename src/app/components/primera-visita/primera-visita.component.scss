@@ -1,58 +1,61 @@
 .primera-visita-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f6f9fc 0%, #e3edf7 100%);
+  background: var(--surface-ground);
   padding: 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
-  border-radius: 20px;
-  box-shadow: 0 10px 20px rgba(61, 90, 128, 0.1);
 
   .form-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     
     h1 {
-      font-size: 2.5rem;
-      color: #2d4059;
+      font-size: 2rem;
+      color: var(--primary-color);
       margin-bottom: 0.5rem;
-      font-weight: 700;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      font-weight: 600;
     }
 
     p {
-      font-size: 1.2rem;
-      color: #3d5a80;
-      opacity: 0.8;
+      font-size: 1.1rem;
+      color: var(--text-color-secondary);
     }
   }
 
   .visita-form {
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--surface-card);
     padding: 2rem;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    border-radius: 1rem;
+    box-shadow: var(--card-shadow);
+    max-width: 1200px;
+    margin: 0 auto;
 
     .form-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
+      gap: 2rem;
 
-      .full-width {
-        grid-column: 1 / -1;
-      }
+      .field {
+        &.col-12 {
+          grid-column: 1 / -1;
+        }
 
-      mat-form-field {
-        width: 100%;
+        label {
+          display: block;
+          margin-bottom: 0.5rem;
+          color: var(--text-color);
+          font-weight: 500;
+        }
 
-        &.mat-form-field-appearance-outline {
-          .mat-form-field-outline {
-            background: rgba(255, 255, 255, 0.8);
-          }
+        input, textarea, p-dropdown, p-calendar, p-inputNumber {
+          width: 100%;
         }
 
         textarea {
-          min-height: 100px;
+          resize: vertical;
+        }
+
+        small.p-error {
+          display: block;
+          margin-top: 0.25rem;
         }
       }
     }
@@ -63,37 +66,7 @@
       gap: 1rem;
       margin-top: 2rem;
       padding-top: 1rem;
-      border-top: 1px solid rgba(61, 90, 128, 0.1);
-
-      button {
-        min-width: 120px;
-        border-radius: 25px;
-        padding: 0.5rem 1.5rem;
-        
-        &.mat-raised-button {
-          background: linear-gradient(45deg, #3d5a80, #98c1d9);
-          color: white;
-          border: none;
-          
-          &:hover {
-            background: linear-gradient(45deg, #98c1d9, #3d5a80);
-            box-shadow: 0 4px 8px rgba(61, 90, 128, 0.3);
-            transform: translateY(-2px);
-          }
-
-          &:disabled {
-            background: #cccccc;
-          }
-        }
-
-        &.mat-button {
-          color: #3d5a80;
-          
-          &:hover {
-            background-color: rgba(61, 90, 128, 0.1);
-          }
-        }
-      }
+      border-top: 1px solid var(--surface-border);
     }
   }
 }
@@ -101,31 +74,19 @@
 @media (max-width: 768px) {
   .primera-visita-container {
     padding: 1rem;
-    
-    .form-header {
-      margin-bottom: 2rem;
-      
-      h1 {
-        font-size: 2rem;
-      }
-      
-      p {
-        font-size: 1rem;
-      }
-    }
 
     .visita-form {
       padding: 1.5rem;
-      
+
       .form-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
       }
 
       .button-container {
-        flex-direction: column;
+        flex-direction: column-reverse;
         
-        button {
+        p-button {
           width: 100%;
         }
       }

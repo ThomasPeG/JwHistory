@@ -1,42 +1,51 @@
-<div class="investigar-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Por Investigar</mat-card-title>
-    </mat-card-header>
-    
-    <mat-card-content>
-      <form [formGroup]="investigarForm" (ngSubmit)="onSubmit()" class="investigar-form">
-        <mat-form-field appearance="fill">
-          <mat-label>Por Investigar</mat-label>
-          <textarea matInput formControlName="porInvestigar" placeholder="Ingrese el tema a investigar"></textarea>
-          <mat-error *ngIf="investigarForm.get('porInvestigar')?.hasError('required')">
-            El tema a investigar es requerido
-          </mat-error>
-        </mat-form-field>
+<div class="investigar-container animate-in">
+  <div class="form-header">
+    <h1>Temas por Investigar</h1>
+    <p>Registra los temas que necesitas investigar</p>
+  </div>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Pregunta</mat-label>
-          <textarea matInput formControlName="pregunta" placeholder="Ingrese la pregunta"></textarea>
-          <mat-error *ngIf="investigarForm.get('pregunta')?.hasError('required')">
-            La pregunta es requerida
-          </mat-error>
-        </mat-form-field>
+  <form [formGroup]="investigacionForm" (ngSubmit)="onSubmit()" class="investigar-form">
+    <div class="form-grid">
+      <div class="field col-12 md:col-6">
+        <label for="tema">Tema</label>
+        <input id="tema" type="text" pInputText formControlName="tema" placeholder="Ingrese el tema a investigar" />
+        <small class="p-error" *ngIf="investigacionForm.get('tema')?.invalid && investigacionForm.get('tema')?.touched">
+          El tema es requerido
+        </small>
+      </div>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Fecha</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="fecha">
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-          <mat-error *ngIf="investigarForm.get('fecha')?.hasError('required')">
-            La fecha es requerida
-          </mat-error>
-        </mat-form-field>
+      <div class="field col-12 md:col-6">
+        <label for="fecha">Fecha</label>
+        <p-calendar id="fecha" formControlName="fecha" [showIcon]="true"></p-calendar>
+        <small class="p-error" *ngIf="investigacionForm.get('fecha')?.invalid && investigacionForm.get('fecha')?.touched">
+          La fecha es requerida
+        </small>
+      </div>
 
-        <div class="button-container">
-          <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="!investigarForm.valid">Guardar</button>
-          <button mat-button type="button" (click)="onCancel()">Cancelar</button>
-        </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
+      <div class="field col-12">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" pInputTextarea formControlName="descripcion" rows="3" placeholder="Describa el tema a investigar"></textarea>
+        <small class="p-error" *ngIf="investigacionForm.get('descripcion')?.invalid && investigacionForm.get('descripcion')?.touched">
+          La descripción es requerida
+        </small>
+      </div>
+
+      <div class="field col-12">
+        <label for="referencias">Referencias</label>
+        <textarea id="referencias" pInputTextarea formControlName="referencias" rows="3" placeholder="Ingrese las referencias bibliográficas"></textarea>
+      </div>
+
+      <div class="field col-12">
+        <label for="notas">Notas Adicionales</label>
+        <textarea id="notas" pInputTextarea formControlName="notas" rows="3" placeholder="Ingrese notas adicionales"></textarea>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <p-button type="button" label="Cancelar" (onClick)="onCancel()" styleClass="p-button-text"></p-button>
+      <p-button type="submit" label="Guardar" [disabled]="!investigacionForm.valid"></p-button>
+    </div>
+  </form>
 </div>
+
+<p-toast></p-toast>
