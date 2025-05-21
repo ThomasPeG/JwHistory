@@ -1,21 +1,46 @@
 <div class="estudio-container animate-in">
-  <div class="form-header">
-    <h1>Registro de Estudio</h1>
-    <p>Registra los detalles del estudio bíblico</p>
+  <div class="estudios-list-container">
+    <div class="header-section">
+      <h1>Estudios Bíblicos</h1>
+      <p-button 
+        label="Nuevo Estudio" 
+        icon="pi pi-plus" 
+        (onClick)="showDialog()" 
+        styleClass="p-button-primary">
+      </p-button>
+    </div>
+
+    <p-table [value]="estudios" [paginator]="true" [rows]="10" [responsive]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Fecha</th>
+          <th>Duración</th>
+          <th>Publicación</th>
+          <th>Tema Estudiado</th>
+          <th>Próximo Tema</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-estudio>
+        <tr>
+          <td>{{estudio.fecha | date:'dd/MM/yyyy'}}</td>
+          <td>{{estudio.duracion}} minutos</td>
+          <td>{{estudio.publicacion}}</td>
+          <td>{{estudio.temaEstudiado}}</td>
+          <td>{{estudio.proximoTema}}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5" class="text-center">No hay estudios registrados</td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
 
-  <p-card>
+  <p-dialog header="Nuevo Estudio" [(visible)]="displayDialog" [modal]="true" [style]="{width: '90vw'}" [maximizable]="true">
     <form [formGroup]="estudioForm" (ngSubmit)="onSubmit()" class="estudio-form">
       <div class="form-grid">
-        <div class="field">
-          <label for="nombre">Nombre</label>
-          <input id="nombre" type="text" pInputText formControlName="nombre" placeholder="Ingrese el nombre" />
-          <small class="p-error" *ngIf="estudioForm.get('nombre')?.invalid && estudioForm.get('nombre')?.touched">
-            El nombre es requerido
-          </small>
-        </div>
-
-        <div class="field">
+        <div class="field col-12 md:col-6">
           <label for="fecha">Fecha</label>
           <p-calendar id="fecha" formControlName="fecha" [showIcon]="true"></p-calendar>
           <small class="p-error" *ngIf="estudioForm.get('fecha')?.invalid && estudioForm.get('fecha')?.touched">
@@ -23,25 +48,46 @@
           </small>
         </div>
 
-        <div class="field col-12">
-          <label for="temaAnalizado">Tema Analizado</label>
-          <textarea id="temaAnalizado" pInputTextarea formControlName="temaAnalizado" rows="3" placeholder="Ingrese el tema que se analizó"></textarea>
-          <small class="p-error" *ngIf="estudioForm.get('temaAnalizado')?.invalid && estudioForm.get('temaAnalizado')?.touched">
-            El tema analizado es requerido
+        <div class="field col-12 md:col-6">
+          <label for="duracion">Duración (minutos)</label>
+          <p-inputNumber id="duracion" formControlName="duracion" [min]="1" placeholder="Ingrese la duración"></p-inputNumber>
+          <small class="p-error" *ngIf="estudioForm.get('duracion')?.invalid && estudioForm.get('duracion')?.touched">
+            La duración es requerida y debe ser mayor a 0
           </small>
         </div>
 
         <div class="field col-12">
-          <label for="temaPorAnalizar">Tema por Analizar</label>
-          <textarea id="temaPorAnalizar" pInputTextarea formControlName="temaPorAnalizar" rows="3" placeholder="Ingrese el tema para la próxima visita"></textarea>
-          <small class="p-error" *ngIf="estudioForm.get('temaPorAnalizar')?.invalid && estudioForm.get('temaPorAnalizar')?.touched">
-            El tema por analizar es requerido
+          <label for="publicacion">Publicación</label>
+          <input id="publicacion" type="text" pInputText formControlName="publicacion" placeholder="Nombre de la publicación">
+          <small class="p-error" *ngIf="estudioForm.get('publicacion')?.invalid && estudioForm.get('publicacion')?.touched">
+            La publicación es requerida
           </small>
         </div>
 
         <div class="field col-12">
-          <label for="investigarResponder">Investigar/Responder</label>
-          <textarea id="investigarResponder" pInputTextarea formControlName="investigarResponder" rows="3" placeholder="Puntos para investigar o responder"></textarea>
+          <label for="temaEstudiado">Tema Estudiado</label>
+          <textarea id="temaEstudiado" pInputTextarea formControlName="temaEstudiado" rows="3" placeholder="Describa el tema estudiado"></textarea>
+          <small class="p-error" *ngIf="estudioForm.get('temaEstudiado')?.invalid && estudioForm.get('temaEstudiado')?.touched">
+            El tema estudiado es requerido
+          </small>
+        </div>
+
+        <div class="field col-12">
+          <label for="proximoTema">Próximo Tema</label>
+          <textarea id="proximoTema" pInputTextarea formControlName="proximoTema" rows="3" placeholder="Describa el tema para la próxima sesión"></textarea>
+          <small class="p-error" *ngIf="estudioForm.get('proximoTema')?.invalid && estudioForm.get('proximoTema')?.touched">
+            El próximo tema es requerido
+          </small>
+        </div>
+
+        <div class="field col-12">
+          <label for="observaciones">Observaciones</label>
+          <textarea id="observaciones" pInputTextarea formControlName="observaciones" rows="3" placeholder="Ingrese observaciones adicionales"></textarea>
+        </div>
+
+        <div class="field col-12">
+          <label for="preguntaPendiente">Pregunta Pendiente</label>
+          <textarea id="preguntaPendiente" pInputTextarea formControlName="preguntaPendiente" rows="3" placeholder="Ingrese preguntas pendientes"></textarea>
         </div>
       </div>
 
@@ -50,7 +96,7 @@
         <p-button type="submit" label="Guardar" [disabled]="!estudioForm.valid"></p-button>
       </div>
     </form>
-  </p-card>
-</div>
+  </p-dialog>
 
-<p-toast></p-toast>
+  <p-toast></p-toast>
+</div>

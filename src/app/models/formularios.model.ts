@@ -1,14 +1,16 @@
-// Modelo para Primera Visita
 export interface PrimeraVisita {
-    fecha: Date;
-    nombres: string;
-    preguntaInicial: string;
-    direccion: string;
-    tipoPersona: 'ateo' | 'cristiano' | 'catolico';
-    inquietudAmo?: string;
-    datosPersonales?: string;
-    preguntaPendiente?: string;
-    duracion: number;
+  userId: string;
+  date: Date;
+  names: string;
+  initialQuestion: string;
+  address: string;
+  personType: string;
+  ownerConcern: string;
+  personalData: string;
+  pendingQuestion: string;
+  duration: number;
+  notes: string;
+  nextVisitDate: Date;
 }
 
 // Modelo para Revisita

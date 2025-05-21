@@ -1,59 +1,92 @@
-<div class="revisita-container animate-in">
-  <div class="form-header">
-    <h1>Registro de Revisita</h1>
-    <p>Registra los detalles de tu revisita</p>
+<div class="revisita-container">
+  <div class="visitas-list-container">
+    <div class="header-section">
+      <h1>Revisitas</h1>
+      <p-button 
+        label="Nueva Revisita" 
+        icon="pi pi-plus" 
+        (onClick)="showDialog()" 
+        styleClass="p-button-primary">
+      </p-button>
+    </div>
+
+    <p-table [value]="revisitas" [paginator]="true" [rows]="10" [responsive]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Fecha</th>
+          <th>Duración</th>
+          <th>Tema Analizado</th>
+          <th>Tema por Analizar</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-revisita>
+        <tr>
+          <td>{{revisita.fecha | date:'dd/MM/yyyy'}}</td>
+          <td>{{revisita.duracion}} minutos</td>
+          <td>{{revisita.temaAnalizado}}</td>
+          <td>{{revisita.temaPorAnalizar}}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="4" class="text-center">No hay revisitas registradas</td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
 
-  <form [formGroup]="revisitaForm" (ngSubmit)="onSubmit()" class="revisita-form">
-    <div class="form-grid">
-      <div class="field col-12 md:col-6">
-        <label for="fecha">Fecha</label>
-        <p-calendar id="fecha" formControlName="fecha" [showIcon]="true"></p-calendar>
-        <small class="p-error" *ngIf="revisitaForm.get('fecha')?.invalid && revisitaForm.get('fecha')?.touched">
-          La fecha es requerida
-        </small>
+  <p-dialog header="Nueva Revisita" [(visible)]="displayDialog" [modal]="true" [style]="{width: '90vw'}" [maximizable]="true">
+    <form [formGroup]="revisitaForm" (ngSubmit)="onSubmit()" class="revisita-form">
+      <div class="form-grid">
+        <div class="field col-12 md:col-6">
+          <label for="fecha">Fecha</label>
+          <p-calendar id="fecha" formControlName="fecha" [showIcon]="true"></p-calendar>
+          <small class="p-error" *ngIf="revisitaForm.get('fecha')?.invalid && revisitaForm.get('fecha')?.touched">
+            La fecha es requerida
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="duracion">Duración (minutos)</label>
+          <p-inputNumber id="duracion" formControlName="duracion" [min]="1" placeholder="Ingrese la duración"></p-inputNumber>
+          <small class="p-error" *ngIf="revisitaForm.get('duracion')?.invalid && revisitaForm.get('duracion')?.touched">
+            La duración es requerida y debe ser mayor a 0
+          </small>
+        </div>
+
+        <div class="field col-12">
+          <label for="temaAnalizado">Tema Analizado</label>
+          <textarea id="temaAnalizado" pInputTextarea formControlName="temaAnalizado" rows="3" placeholder="Describa el tema analizado"></textarea>
+          <small class="p-error" *ngIf="revisitaForm.get('temaAnalizado')?.invalid && revisitaForm.get('temaAnalizado')?.touched">
+            El tema analizado es requerido
+          </small>
+        </div>
+
+        <div class="field col-12">
+          <label for="temaPorAnalizar">Tema por Analizar</label>
+          <textarea id="temaPorAnalizar" pInputTextarea formControlName="temaPorAnalizar" rows="3" placeholder="Describa el tema para la próxima visita"></textarea>
+          <small class="p-error" *ngIf="revisitaForm.get('temaPorAnalizar')?.invalid && revisitaForm.get('temaPorAnalizar')?.touched">
+            El tema por analizar es requerido
+          </small>
+        </div>
+
+        <div class="field col-12">
+          <label for="observaciones">Observaciones</label>
+          <textarea id="observaciones" pInputTextarea formControlName="observaciones" rows="3" placeholder="Ingrese observaciones adicionales"></textarea>
+        </div>
+
+        <div class="field col-12">
+          <label for="preguntaPendiente">Pregunta Pendiente</label>
+          <textarea id="preguntaPendiente" pInputTextarea formControlName="preguntaPendiente" rows="3" placeholder="Ingrese preguntas pendientes"></textarea>
+        </div>
       </div>
 
-      <div class="field col-12 md:col-6">
-        <label for="duracion">Duración (minutos)</label>
-        <p-inputNumber id="duracion" formControlName="duracion" [min]="1" placeholder="Ingrese la duración"></p-inputNumber>
-        <small class="p-error" *ngIf="revisitaForm.get('duracion')?.invalid && revisitaForm.get('duracion')?.touched">
-          La duración es requerida y debe ser mayor a 0
-        </small>
+      <div class="button-container">
+        <p-button type="button" label="Cancelar" (onClick)="onCancel()" styleClass="p-button-text"></p-button>
+        <p-button type="submit" label="Guardar" [disabled]="!revisitaForm.valid"></p-button>
       </div>
+    </form>
+  </p-dialog>
 
-      <div class="field col-12">
-        <label for="temaAnalizado">Tema Analizado</label>
-        <textarea id="temaAnalizado" pInputTextarea formControlName="temaAnalizado" rows="3" placeholder="Describa el tema analizado"></textarea>
-        <small class="p-error" *ngIf="revisitaForm.get('temaAnalizado')?.invalid && revisitaForm.get('temaAnalizado')?.touched">
-          El tema analizado es requerido
-        </small>
-      </div>
-
-      <div class="field col-12">
-        <label for="temaPorAnalizar">Tema por Analizar</label>
-        <textarea id="temaPorAnalizar" pInputTextarea formControlName="temaPorAnalizar" rows="3" placeholder="Describa el tema para la próxima visita"></textarea>
-        <small class="p-error" *ngIf="revisitaForm.get('temaPorAnalizar')?.invalid && revisitaForm.get('temaPorAnalizar')?.touched">
-          El tema por analizar es requerido
-        </small>
-      </div>
-
-      <div class="field col-12">
-        <label for="observaciones">Observaciones</label>
-        <textarea id="observaciones" pInputTextarea formControlName="observaciones" rows="3" placeholder="Ingrese observaciones adicionales"></textarea>
-      </div>
-
-      <div class="field col-12">
-        <label for="preguntaPendiente">Pregunta Pendiente</label>
-        <textarea id="preguntaPendiente" pInputTextarea formControlName="preguntaPendiente" rows="3" placeholder="Ingrese preguntas pendientes"></textarea>
-      </div>
-    </div>
-
-    <div class="button-container">
-      <p-button type="button" label="Cancelar" (onClick)="onCancel()" styleClass="p-button-text"></p-button>
-      <p-button type="submit" label="Guardar" [disabled]="!revisitaForm.valid"></p-button>
-    </div>
-  </form>
+  <p-toast></p-toast>
 </div>
-
-<p-toast></p-toast>

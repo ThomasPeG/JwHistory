@@ -9,6 +9,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { DialogModule } from 'primeng/dialog';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-revisita',
@@ -22,7 +24,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
     CardModule,
     ToastModule,
     CalendarModule,
-    InputNumberModule
+    InputNumberModule,
+    DialogModule,
+    TableModule
   ],
   providers: [MessageService],
   templateUrl: './revisita.component.html',
@@ -30,6 +34,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 })
 export class RevisitaComponent {
   revisitaForm: FormGroup;
+  displayDialog: boolean = false;
+  revisitas: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -56,6 +62,7 @@ export class RevisitaComponent {
       });
 
       this.revisitaForm.reset();
+      this.displayDialog = false;
     } else {
       this.messageService.add({
         severity: 'error',
@@ -67,10 +74,15 @@ export class RevisitaComponent {
 
   onCancel(): void {
     this.revisitaForm.reset();
+    this.displayDialog = false;
     this.messageService.add({
       severity: 'info',
       summary: 'Cancelado',
       detail: 'Formulario cancelado'
     });
+  }
+
+  showDialog(): void {
+    this.displayDialog = true;
   }
 }

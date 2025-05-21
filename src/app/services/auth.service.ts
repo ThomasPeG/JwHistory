@@ -55,10 +55,10 @@ export class AuthService {
     if (typeof window !== 'undefined' && window.localStorage) {
       const userData = localStorage.getItem('userData');
       if (!userData) return null;
-      
       try {
-        const { userId } = JSON.parse(userData);
-        return userId;
+        const user = JSON.parse(userData);
+        console.log("ID", user.user._id);
+        return user.user._id;
       } catch {
         return null;
       }

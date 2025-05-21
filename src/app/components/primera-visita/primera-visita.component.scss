@@ -1,72 +1,136 @@
 .primera-visita-container {
-  min-height: 100vh;
-  background: var(--surface-ground);
   padding: 2rem;
+  background: var(--surface-ground);
 
-  .form-header {
-    text-align: center;
-    margin-bottom: 2rem;
-    
-    h1 {
-      font-size: 2rem;
-      color: var(--primary-color);
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-
-    p {
-      font-size: 1.1rem;
-      color: var(--text-color-secondary);
-    }
-  }
-
-  .visita-form {
+  .visitas-list-container {
     background: var(--surface-card);
-    padding: 2rem;
     border-radius: 1rem;
+    padding: 2rem;
     box-shadow: var(--card-shadow);
-    max-width: 1200px;
-    margin: 0 auto;
+    margin-bottom: 2rem;
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
 
-      .field {
-        &.col-12 {
-          grid-column: 1 / -1;
-        }
-
-        label {
-          display: block;
-          margin-bottom: 0.5rem;
-          color: var(--text-color);
-          font-weight: 500;
-        }
-
-        input, textarea, p-dropdown, p-calendar, p-inputNumber {
-          width: 100%;
-        }
-
-        textarea {
-          resize: vertical;
-        }
-
-        small.p-error {
-          display: block;
-          margin-top: 0.25rem;
-        }
+      h1 {
+        color: var(--primary-color);
+        margin: 0;
+        font-size: 1.5rem;
       }
     }
 
-    .button-container {
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-      margin-top: 2rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--surface-border);
+    ::ng-deep {
+      .p-datatable {
+        .p-datatable-header {
+          background: transparent;
+          border: none;
+          padding: 0;
+        }
+
+        .p-datatable-thead > tr > th {
+          background: var(--surface-section);
+          color: var(--text-color);
+          padding: 1rem;
+          font-weight: 600;
+        }
+
+        .p-datatable-tbody > tr {
+          &:hover {
+            background: var(--surface-hover);
+          }
+
+          > td {
+            padding: 1rem;
+            border: 1px solid var(--surface-border);
+          }
+        }
+
+        .p-paginator {
+          background: transparent;
+          border: none;
+          padding-top: 1rem;
+        }
+      }
+    }
+  }
+}
+
+// Estilos para el diálogo de nueva visita
+::ng-deep {
+  .p-dialog {
+    .p-dialog-header {
+      background: var(--surface-card);
+      color: var(--primary-color);
+      padding: 1.5rem;
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
+    }
+
+    .p-dialog-content {
+      background: var(--surface-card);
+      padding: 0;
+      border-bottom-left-radius: 1rem;
+      border-bottom-right-radius: 1rem;
+
+      .visita-form {
+        padding: 2rem;
+
+        .form-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 2rem;
+
+          .field {
+            &.col-12 {
+              grid-column: 1 / -1;
+            }
+
+            label {
+              display: block;
+              margin-bottom: 0.5rem;
+              color: var(--text-color);
+              font-weight: 500;
+            }
+
+            input, textarea, p-dropdown, p-calendar, p-inputNumber {
+              width: 100%;
+
+              &.ng-invalid.ng-touched {
+                border-color: var(--red-500);
+              }
+            }
+
+            textarea {
+              resize: vertical;
+              min-height: 100px;
+            }
+
+            small.p-error {
+              display: block;
+              margin-top: 0.25rem;
+              color: var(--red-500);
+            }
+          }
+        }
+
+        .button-container {
+          display: flex;
+          justify-content: flex-end;
+          gap: 1rem;
+          margin-top: 2rem;
+          padding-top: 1rem;
+          border-top: 1px solid var(--surface-border);
+
+          p-button {
+            ::ng-deep .p-button {
+              min-width: 120px;
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -75,21 +139,54 @@
   .primera-visita-container {
     padding: 1rem;
 
-    .visita-form {
-      padding: 1.5rem;
+    .visitas-list-container {
+      padding: 1rem;
 
-      .form-grid {
-        grid-template-columns: 1fr;
+      .header-section {
+        flex-direction: column;
         gap: 1rem;
-      }
+        align-items: stretch;
 
-      .button-container {
-        flex-direction: column-reverse;
-        
+        h1 {
+          text-align: center;
+        }
+
         p-button {
           width: 100%;
         }
       }
+    }
+  }
+
+  ::ng-deep .p-dialog {
+    .p-dialog-content {
+      .visita-form {
+        padding: 1rem;
+
+        .form-grid {
+          gap: 1rem;
+        }
+
+        .button-container {
+          flex-direction: column-reverse;
+          
+          p-button {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .p-calendar, .p-dropdown, .p-inputnumber {
+    width: 100%;
+  }
+
+  .p-inputtext {
+    &.ng-invalid.ng-touched {
+      border-color: var(--red-500);
     }
   }
 }

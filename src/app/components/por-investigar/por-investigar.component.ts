@@ -8,6 +8,8 @@ import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
+import { DialogModule } from 'primeng/dialog';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-por-investigar',
@@ -20,7 +22,9 @@ import { CalendarModule } from 'primeng/calendar';
     ButtonModule,
     CardModule,
     ToastModule,
-    CalendarModule
+    CalendarModule,
+    DialogModule,
+    TableModule
   ],
   providers: [MessageService],
   templateUrl: './por-investigar.component.html',
@@ -28,6 +32,8 @@ import { CalendarModule } from 'primeng/calendar';
 })
 export class PorInvestigarComponent {
   investigacionForm: FormGroup;
+  displayDialog: boolean = false;
+  investigaciones: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -42,6 +48,10 @@ export class PorInvestigarComponent {
     });
   }
 
+  showDialog(): void {
+    this.displayDialog = true;
+  }
+
   onSubmit(): void {
     if (this.investigacionForm.valid) {
       console.log('Datos del formulario:', this.investigacionForm.value);
@@ -53,6 +63,7 @@ export class PorInvestigarComponent {
       });
 
       this.investigacionForm.reset();
+      this.displayDialog = false;
     } else {
       this.messageService.add({
         severity: 'error',
@@ -64,6 +75,7 @@ export class PorInvestigarComponent {
 
   onCancel(): void {
     this.investigacionForm.reset();
+    this.displayDialog = false;
     this.messageService.add({
       severity: 'info',
       summary: 'Cancelado',

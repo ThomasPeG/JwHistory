@@ -32,11 +32,11 @@
       <p-card [header]="card.title" styleClass="dashboard-card h-full">
         <ng-template pTemplate="content">
           <p>{{card.description}}</p>
-        </ng-template>
-        <ng-template pTemplate="footer">
-          <p-button [label]="card.buttonText" 
-                    [routerLink]="card.route" 
-                    styleClass="p-button-raised w-full"></p-button>
+          <div class="button-wrapper">
+            <p-button [label]="card.buttonText" 
+                     [routerLink]="card.route" 
+                     styleClass="p-button-raised w-95"></p-button>
+          </div>
         </ng-template>
       </p-card>
     </div>

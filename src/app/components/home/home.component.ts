@@ -21,28 +21,28 @@ export class HomeComponent {
     {
       title: 'Primera Visita',
       description: 'Registra los detalles de tus primeras visitas y seguimiento inicial.',
-      buttonText: 'Registrar Visita',
+      buttonText: 'Ver',
       route: '/primera-visita',
       icon: 'pi-user-plus'
     },
     {
       title: 'Revisitas',
       description: 'Gestiona y da seguimiento a tus revisitas.',
-      buttonText: 'Ver Revisitas',
+      buttonText: 'Ver',
       route: '/revisita',
       icon: 'pi-users'
     },
     {
       title: 'Estudios',
       description: 'Administra tus estudios bíblicos en curso.',
-      buttonText: 'Gestionar Estudios',
+      buttonText: 'Ver',
       route: '/estudio',
       icon: 'pi-book'
     },
     {
       title: 'Por Investigar',
       description: 'Registra temas pendientes por investigar.',
-      buttonText: 'Añadir Tema',
+      buttonText: 'Ver',
       route: '/por-investigar',
       icon: 'pi-search'
     },

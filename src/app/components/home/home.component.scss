@@ -257,3 +257,20 @@
     padding: 1rem;
   }
 }
+
+::ng-deep {
+  .dashboard-card {
+    .p-card-content {
+      padding-bottom: 1rem;
+    }
+    
+    .button-wrapper {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+
+    .w-95 {
+      width: 95%;
+    }
+  }
+}
