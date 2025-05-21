@@ -1,0 +1,91 @@
+.login-container {
+  min-height: 100vh;
+  background: var(--surface-ground);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+
+  .login-card {
+    background: var(--surface-card);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: var(--card-shadow);
+    width: 100%;
+    max-width: 400px;
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      
+      h1 {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
+
+      p {
+        font-size: 1.1rem;
+        color: var(--text-color-secondary);
+      }
+    }
+
+    .login-form {
+      .field {
+        margin-bottom: 1.5rem;
+
+        label {
+          display: block;
+          margin-bottom: 0.5rem;
+          color: var(--text-color);
+          font-weight: 500;
+        }
+
+        input {
+          width: 100%;
+        }
+
+        small.p-error {
+          display: block;
+          margin-top: 0.25rem;
+        }
+      }
+
+      .button-container {
+        margin-top: 2rem;
+      }
+
+      .register-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: var(--text-color-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    padding: 1rem;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}

@@ -1,0 +1,82 @@
+<div class="register-container animate-in">
+  <div class="register-card">
+    <div class="register-header">
+      <h1>Registro</h1>
+      <p>Crea tu cuenta para comenzar</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      <div class="field">
+        <label for="name">Nombre</label>
+        <input 
+          id="name" 
+          type="text" 
+          pInputText 
+          formControlName="name" 
+          placeholder="Ingrese su nombre"
+        />
+        <small class="p-error" *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+          El nombre debe tener al menos 2 caracteres
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="email">Correo electrónico</label>
+        <input 
+          id="email" 
+          type="email" 
+          pInputText 
+          formControlName="email" 
+          placeholder="Ingrese su correo electrónico"
+        />
+        <small class="p-error" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+          Ingrese un correo electrónico válido
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <input 
+          id="password" 
+          type="password" 
+          pInputText 
+          formControlName="password" 
+          placeholder="Ingrese su contraseña"
+        />
+        <small class="p-error" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+          La contraseña debe tener al menos 6 caracteres
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="confirmPassword">Confirmar contraseña</label>
+        <input 
+          id="confirmPassword" 
+          type="password" 
+          pInputText 
+          formControlName="confirmPassword" 
+          placeholder="Confirme su contraseña"
+        />
+        <small class="p-error" *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched">
+          Las contraseñas no coinciden
+        </small>
+      </div>
+
+      <div class="button-container">
+        <p-button 
+          type="submit" 
+          label="Registrarse" 
+          [loading]="loading"
+          [disabled]="!registerForm.valid || loading"
+          styleClass="w-full">
+        </p-button>
+      </div>
+
+      <div class="login-link">
+        ¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesión</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<p-toast></p-toast>
