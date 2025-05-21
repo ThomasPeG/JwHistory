@@ -33,7 +33,7 @@ export class AuthService {
   login(credentials: LoginData): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials).pipe(
       tap((response) => {
-        console.log("RESPONSE", response);
+        console.log("RESPONSE",this.apiUrl );
         if (response && response.user) {
           const userData = {
             user: response.user
