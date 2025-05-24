@@ -31,7 +31,7 @@ import { TableModule } from 'primeng/table';
   styleUrls: ['./por-investigar.component.scss']
 })
 export class PorInvestigarComponent {
-  investigacionForm: FormGroup;
+  form: FormGroup;
   displayDialog: boolean = false;
   investigaciones: any[] = [];
 
@@ -39,7 +39,7 @@ export class PorInvestigarComponent {
     private fb: FormBuilder,
     private messageService: MessageService
   ) {
-    this.investigacionForm = this.fb.group({
+    this.form = this.fb.group({
       tema: ['', Validators.required],
       descripcion: ['', Validators.required],
       fecha: ['', Validators.required],
@@ -53,8 +53,8 @@ export class PorInvestigarComponent {
   }
 
   onSubmit(): void {
-    if (this.investigacionForm.valid) {
-      console.log('Datos del formulario:', this.investigacionForm.value);
+    if (this.form.valid) {
+      console.log('Datos del formulario:', this.form.value);
       
       this.messageService.add({
         severity: 'success',
@@ -62,7 +62,7 @@ export class PorInvestigarComponent {
         detail: 'Tema para investigar guardado correctamente'
       });
 
-      this.investigacionForm.reset();
+      this.form.reset();
       this.displayDialog = false;
     } else {
       this.messageService.add({
@@ -74,7 +74,7 @@ export class PorInvestigarComponent {
   }
 
   onCancel(): void {
-    this.investigacionForm.reset();
+    this.form.reset();
     this.displayDialog = false;
     this.messageService.add({
       severity: 'info',

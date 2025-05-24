@@ -36,7 +36,7 @@ import { TableModule } from 'primeng/table';
   styleUrls: ['./primera-visita.component.scss']
 })
 export class PrimeraVisitaComponent {
-  visitaForm: FormGroup;
+  form: FormGroup;
   tiposPersona = [
     { label: 'Ateo', value: 'ateo' },
     { label: 'Cristiano', value: 'cristiano' },
@@ -52,7 +52,7 @@ export class PrimeraVisitaComponent {
     private primeraVisitaService: PrimeraVisitaService,
     private authService: AuthService
   ) {
-    this.visitaForm = this.fb.group({
+    this.form = this.fb.group({
       userId: [''],
       date: ['', Validators.required],
       nextVisitDate: ['', Validators.required],
@@ -69,13 +69,13 @@ export class PrimeraVisitaComponent {
   }
 
   onSubmit(): void {
-    if (this.visitaForm.valid) {
+    if (this.form.valid) {
 
       const userId = this.authService.getUserId();
       console.log("DESDE EL COMPONENTE ID",userId);
 
 
-      let visitaData = this.visitaForm.value;
+      let visitaData = this.form.value;
       visitaData.userId = userId;
       
       this.primeraVisitaService.crearPrimeraVisita(visitaData).subscribe({
@@ -85,7 +85,7 @@ export class PrimeraVisitaComponent {
             summary: 'Éxito',
             detail: 'Visita guardada correctamente'
           });
-          this.visitaForm.reset();
+          this.form.reset();
         },
         error: (error) => {
           console.error('Error al guardar la visita:', error);
@@ -100,7 +100,7 @@ export class PrimeraVisitaComponent {
   }
 
   onCancel(): void {
-    this.visitaForm.reset();
+    this.form.reset();
     this.messageService.add({
       severity: 'info',
       summary: 'Cancelado',

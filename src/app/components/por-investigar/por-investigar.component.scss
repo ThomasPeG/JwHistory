@@ -1,58 +1,12 @@
 .investigar-container {
-  padding: 2rem;
-  background: var(--surface-ground);
+  @extend .page-container !optional;
 
   .investigar-list-container {
-    background: var(--surface-card);
-    border-radius: 1rem;
-    padding: 2rem;
-    box-shadow: var(--card-shadow);
-    margin-bottom: 2rem;
-
-    .header-section {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-
-      h1 {
-        color: var(--primary-color);
-        margin: 0;
-        font-size: 1.5rem;
-      }
-    }
+    @extend .card-container !optional;
 
     ::ng-deep {
       .p-datatable {
-        .p-datatable-header {
-          background: transparent;
-          border: none;
-          padding: 0;
-        }
-
-        .p-datatable-thead > tr > th {
-          background: var(--surface-section);
-          color: var(--text-color);
-          padding: 1rem;
-          font-weight: 600;
-        }
-
-        .p-datatable-tbody > tr {
-          &:hover {
-            background: var(--surface-hover);
-          }
-
-          > td {
-            padding: 1rem;
-            border: 1px solid var(--surface-border);
-          }
-        }
-
-        .p-paginator {
-          background: transparent;
-          border: none;
-          padding-top: 1rem;
-        }
+        @extend .custom-table !optional;
       }
     }
   }
@@ -60,19 +14,9 @@
 
 ::ng-deep {
   .p-dialog {
-    .p-dialog-header {
-      background: var(--surface-card);
-      color: var(--primary-color);
-      padding: 1.5rem;
-      border-top-left-radius: 1rem;
-      border-top-right-radius: 1rem;
-    }
+    @extend .custom-dialog !optional;
 
     .p-dialog-content {
-      background: var(--surface-card);
-      padding: 0;
-      border-bottom-left-radius: 1rem;
-      border-bottom-right-radius: 1rem;
       min-height: 70vh;
       max-height: 85vh;
       overflow-y: auto;
@@ -85,51 +29,7 @@
 
         .form-grid {
           flex: 1;
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 2rem;
-
-          .field {
-            &.col-12 {
-              grid-column: 1 / -1;
-            }
-
-            label {
-              display: block;
-              margin-bottom: 0.5rem;
-              color: var(--text-color);
-              font-weight: 500;
-            }
-
-            input, textarea, p-calendar {
-              width: 100%;
-
-              &.ng-invalid.ng-touched {
-                border-color: var(--red-500);
-              }
-            }
-
-            textarea {
-              resize: vertical;
-              min-height: 100px;
-            }
-
-            small.p-error {
-              display: block;
-              margin-top: 0.25rem;
-              color: var(--red-500);
-            }
-          }
-        }
-
-        .button-container {
-          margin-top: auto;
-          display: flex;
-          justify-content: flex-end;
-          gap: 1rem;
-          margin-top: 2rem;
-          padding-top: 1rem;
-          border-top: 1px solid var(--surface-border);
+          @extend .form-grid !optional;
         }
       }
     }

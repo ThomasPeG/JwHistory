@@ -1,16 +1,10 @@
-<div class="investigar-container animate-in">
-  <div class="investigar-list-container">
+<div class="page-container">
+  <div class="card-container">
     <div class="header-section">
-      <h1>Temas por Investigar</h1>
-      <p-button 
-        label="Nuevo Tema" 
-        icon="pi pi-plus" 
-        (onClick)="showDialog()" 
-        styleClass="p-button-primary">
-      </p-button>
+      <h1>Por Investigar</h1>
+      <button pButton (click)="showDialog()" label="Nueva Investigación" icon="pi pi-plus"></button>
     </div>
-
-    <p-table [value]="investigaciones" [paginator]="true" [rows]="10" [responsive]="true">
+    <p-table [value]="investigaciones" [paginator]="true" [rows]="10" class="custom-table">
       <ng-template pTemplate="header">
         <tr>
           <th>Fecha</th>
@@ -34,51 +28,44 @@
       </ng-template>
     </p-table>
   </div>
-
-  <p-dialog header="Nuevo Tema para Investigar" [(visible)]="displayDialog" [modal]="true" [style]="{width: '90vw'}" [maximizable]="true">
-    <form [formGroup]="investigacionForm" (ngSubmit)="onSubmit()" class="investigar-form">
-      <div class="form-grid">
-        <div class="field col-12 md:col-6">
-          <label for="fecha">Fecha</label>
-          <p-calendar id="fecha" formControlName="fecha" [showIcon]="true"></p-calendar>
-          <small class="p-error" *ngIf="investigacionForm.get('fecha')?.invalid && investigacionForm.get('fecha')?.touched">
-            La fecha es requerida
-          </small>
-        </div>
-
-        <div class="field col-12">
-          <label for="tema">Tema</label>
-          <input id="tema" type="text" pInputText formControlName="tema" placeholder="Ingrese el tema a investigar">
-          <small class="p-error" *ngIf="investigacionForm.get('tema')?.invalid && investigacionForm.get('tema')?.touched">
-            El tema es requerido
-          </small>
-        </div>
-
-        <div class="field col-12">
-          <label for="descripcion">Descripción</label>
-          <textarea id="descripcion" pInputTextarea formControlName="descripcion" rows="3" placeholder="Describa el tema a investigar"></textarea>
-          <small class="p-error" *ngIf="investigacionForm.get('descripcion')?.invalid && investigacionForm.get('descripcion')?.touched">
-            La descripción es requerida
-          </small>
-        </div>
-
-        <div class="field col-12">
-          <label for="referencias">Referencias</label>
-          <textarea id="referencias" pInputTextarea formControlName="referencias" rows="3" placeholder="Ingrese las referencias bibliográficas"></textarea>
-        </div>
-
-        <div class="field col-12">
-          <label for="notas">Notas Adicionales</label>
-          <textarea id="notas" pInputTextarea formControlName="notas" rows="3" placeholder="Ingrese notas adicionales"></textarea>
-        </div>
-      </div>
-
-      <div class="button-container">
-        <p-button type="button" label="Cancelar" (onClick)="onCancel()" styleClass="p-button-text"></p-button>
-        <p-button type="submit" label="Guardar" [disabled]="!investigacionForm.valid"></p-button>
-      </div>
-    </form>
-  </p-dialog>
-
-  <p-toast></p-toast>
 </div>
+
+<p-dialog [(visible)]="displayDialog" [modal]="true" class="custom-dialog">
+  <form [formGroup]="form" class="form-grid">
+    <div class="field col-12 md:col-6">
+      <label for="fecha">Fecha</label>
+      <p-calendar id="fecha" formControlName="fecha" [showIcon]="true"></p-calendar>
+      <small class="p-error" *ngIf="form.get('fecha')?.invalid && form.get('fecha')?.touched">
+        La fecha es requerida
+      </small>
+    </div>
+
+    <div class="field col-12">
+      <label for="tema">Tema</label>
+      <input id="tema" type="text" pInputText formControlName="tema" placeholder="Ingrese el tema a investigar">
+      <small class="p-error" *ngIf="form.get('tema')?.invalid && form.get('tema')?.touched">
+        El tema es requerido
+      </small>
+    </div>
+
+    <div class="field col-12">
+      <label for="descripcion">Descripción</label>
+      <textarea id="descripcion" pInputTextarea formControlName="descripcion" rows="3" placeholder="Describa el tema a investigar"></textarea>
+      <small class="p-error" *ngIf="form.get('descripcion')?.invalid && form.get('descripcion')?.touched">
+        La descripción es requerida
+      </small>
+    </div>
+
+    <div class="field col-12">
+      <label for="referencias">Referencias</label>
+      <textarea id="referencias" pInputTextarea formControlName="referencias" rows="3" placeholder="Ingrese las referencias bibliográficas"></textarea>
+    </div>
+
+    <div class="field col-12">
+      <label for="notas">Notas Adicionales</label>
+      <textarea id="notas" pInputTextarea formControlName="notas" rows="3" placeholder="Ingrese notas adicionales"></textarea>
+    </div>
+  </form>
+</p-dialog>
+
+<p-toast></p-toast>

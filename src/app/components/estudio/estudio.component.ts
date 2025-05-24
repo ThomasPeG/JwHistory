@@ -33,7 +33,7 @@ import { TableModule } from 'primeng/table';
   styleUrls: ['./estudio.component.scss']
 })
 export class EstudioComponent {
-  estudioForm: FormGroup;
+  form: FormGroup;
   displayDialog: boolean = false;
   estudios: any[] = [];
 
@@ -41,7 +41,7 @@ export class EstudioComponent {
     private fb: FormBuilder,
     private messageService: MessageService
   ) {
-    this.estudioForm = this.fb.group({
+    this.form = this.fb.group({
       fecha: ['', Validators.required],
       duracion: ['', [Validators.required, Validators.min(1)]],
       publicacion: ['', Validators.required],
@@ -53,8 +53,8 @@ export class EstudioComponent {
   }
 
   onSubmit(): void {
-    if (this.estudioForm.valid) {
-      console.log('Datos del formulario:', this.estudioForm.value);
+    if (this.form.valid) {
+      console.log('Datos del formulario:', this.form.value);
       
       this.messageService.add({
         severity: 'success',
@@ -62,7 +62,7 @@ export class EstudioComponent {
         detail: 'Estudio guardado correctamente'
       });
 
-      this.estudioForm.reset();
+      this.form.reset();
       this.displayDialog = false;
     } else {
       this.messageService.add({
@@ -74,7 +74,7 @@ export class EstudioComponent {
   }
 
   onCancel(): void {
-    this.estudioForm.reset();
+    this.form.reset();
     this.displayDialog = false;
     this.messageService.add({
       severity: 'info',

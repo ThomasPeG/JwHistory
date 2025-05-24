@@ -1,17 +1,11 @@
 
-<div class="primera-visita-container">
-  <div class="visitas-list-container">
+<div class="page-container">
+  <div class="card-container">
     <div class="header-section">
-      <h1>Primeras Visitas</h1>
-      <p-button 
-        label="Nueva Visita" 
-        icon="pi pi-plus" 
-        (onClick)="showDialog()" 
-        styleClass="p-button-primary">
-      </p-button>
+      <h1>Primera Visita</h1>
+      <button pButton (click)="showDialog()" label="Nueva Visita" icon="pi pi-plus"></button>
     </div>
-
-    <p-table [value]="visitas" [paginator]="true" [rows]="10" [responsive]="true">
+    <p-table [value]="visitas" [paginator]="true" [rows]="10" class="custom-table">
       <ng-template pTemplate="header">
         <tr>
           <th>Fecha</th>
@@ -39,95 +33,93 @@
       </ng-template>
       <p-button type="button" label="Ver Visitas" (onClick)="showDialog()" styleClass="p-button-info"></p-button>
     </p-table>
+</div>
 
+<p-dialog [(visible)]="displayDialog" [modal]="true" class="custom-dialog">
+  <form [formGroup]="form" class="form-grid">
+    <div class="field">
+      <label for="date">Fecha</label>
+      <p-calendar id="date" formControlName="date" [showIcon]="true" [showButtonBar]="true"></p-calendar>
+      <small class="p-error" *ngIf="form.get('date')?.invalid && form.get('date')?.touched">
+        La fecha es requerida
+      </small>
+    </div>
 
-      <p-dialog header="Nueva Visita" [(visible)]="displayDialog" [modal]="true" [style]="{width: '90vw'}" [maximizable]="true">
-        <form [formGroup]="visitaForm" (ngSubmit)="onSubmit()" class="visita-form">
-          <div class="form-grid">
-            <div class="field">
-              <label for="date">Fecha</label>
-              <p-calendar id="date" formControlName="date" [showIcon]="true" [showButtonBar]="true"></p-calendar>
-              <small class="p-error" *ngIf="visitaForm.get('date')?.invalid && visitaForm.get('date')?.touched">
-                La fecha es requerida
-              </small>
-            </div>
-      
-            <div class="field">
-              <label for="nextVisitDate">Fecha Siguiente Visita</label>
-              <p-calendar id="nextVisitDate" formControlName="nextVisitDate" [showIcon]="true" [showButtonBar]="true"></p-calendar>
-              <small class="p-error" *ngIf="visitaForm.get('nextVisitDate')?.invalid && visitaForm.get('nextVisitDate')?.touched">
-                La fecha de siguiente visita es requerida
-              </small>
-            </div>
-      
-            <div class="field">
-              <label for="names">Nombres</label>
-              <input id="names" type="text" pInputText formControlName="names">
-              <small class="p-error" *ngIf="visitaForm.get('names')?.invalid && visitaForm.get('names')?.touched">
-                El nombre es requerido
-              </small>
-            </div>
-      
-            <div class="field">
-              <label for="address">Dirección</label>
-              <input id="address" type="text" pInputText formControlName="address">
-              <small class="p-error" *ngIf="visitaForm.get('address')?.invalid && visitaForm.get('address')?.touched">
-                La dirección es requerida
-              </small>
-            </div>
-      
-            <div class="field">
-              <label for="personType">Tipo de Persona</label>
-              <p-dropdown id="personType" [options]="tiposPersona" formControlName="personType" 
-                         placeholder="Seleccione un tipo" [showClear]="true"></p-dropdown>
-              <small class="p-error" *ngIf="visitaForm.get('personType')?.invalid && visitaForm.get('personType')?.touched">
-                El tipo de persona es requerido
-              </small>
-            </div>
-      
-            <div class="field">
-              <label for="duration">Duración (minutos)</label>
-              <p-inputNumber id="duration" formControlName="duration" [min]="1" [showButtons]="true"></p-inputNumber>
-              <small class="p-error" *ngIf="visitaForm.get('duration')?.invalid && visitaForm.get('duration')?.touched">
-                La duración es requerida y debe ser mayor a 0
-              </small>
-            </div>
-      
-            <div class="field col-12">
-              <label for="initialQuestion">Pregunta Inicial</label>
-              <textarea id="initialQuestion" pInputTextarea formControlName="initialQuestion" [rows]="3"></textarea>
-              <small class="p-error" *ngIf="visitaForm.get('initialQuestion')?.invalid && visitaForm.get('initialQuestion')?.touched">
-                La pregunta inicial es requerida
-              </small>
-            </div>
-      
-            <div class="field col-12">
-              <label for="ownerConcern">Inquietud del Amo</label>
-              <textarea id="ownerConcern" pInputTextarea formControlName="ownerConcern" [rows]="3"></textarea>
-            </div>
-      
-            <div class="field col-12">
-              <label for="personalData">Datos Personales</label>
-              <textarea id="personalData" pInputTextarea formControlName="personalData" [rows]="3"></textarea>
-            </div>
-      
-            <div class="field col-12">
-              <label for="pendingQuestion">Pregunta Pendiente</label>
-              <textarea id="pendingQuestion" pInputTextarea formControlName="pendingQuestion" [rows]="3"></textarea>
-            </div>
-      
-            <div class="field col-12">
-              <label for="notes">Notas</label>
-              <textarea id="notes" pInputTextarea formControlName="notes" [rows]="3"></textarea>
-            </div>
-          </div>
-      
-          <div class="button-container">
-            <p-button type="button" label="Cancelar" (onClick)="onCancel()" styleClass="p-button-secondary"></p-button>
-            <p-button type="submit" label="Guardar" [disabled]="!visitaForm.valid"></p-button>
-          </div>
-        </form>
-      </p-dialog>
+    <div class="field">
+      <label for="nextVisitDate">Fecha Siguiente Visita</label>
+      <p-calendar id="nextVisitDate" formControlName="nextVisitDate" [showIcon]="true" [showButtonBar]="true"></p-calendar>
+      <small class="p-error" *ngIf="form.get('nextVisitDate')?.invalid && form.get('nextVisitDate')?.touched">
+        La fecha de siguiente visita es requerida
+      </small>
+    </div>
+
+    <div class="field">
+      <label for="names">Nombres</label>
+      <input id="names" type="text" pInputText formControlName="names">
+      <small class="p-error" *ngIf="form.get('names')?.invalid && form.get('names')?.touched">
+        El nombre es requerido
+      </small>
+    </div>
+
+    <div class="field">
+      <label for="address">Dirección</label>
+      <input id="address" type="text" pInputText formControlName="address">
+      <small class="p-error" *ngIf="form.get('address')?.invalid && form.get('address')?.touched">
+        La dirección es requerida
+      </small>
+    </div>
+
+    <div class="field">
+      <label for="personType">Tipo de Persona</label>
+      <p-dropdown id="personType" [options]="tiposPersona" formControlName="personType" 
+                 placeholder="Seleccione un tipo" [showClear]="true"></p-dropdown>
+      <small class="p-error" *ngIf="form.get('personType')?.invalid && form.get('personType')?.touched">
+        El tipo de persona es requerido
+      </small>
+    </div>
+
+    <div class="field">
+      <label for="duration">Duración (minutos)</label>
+      <p-inputNumber id="duration" formControlName="duration" [min]="1" [showButtons]="true"></p-inputNumber>
+      <small class="p-error" *ngIf="form.get('duration')?.invalid && form.get('duration')?.touched">
+        La duración es requerida y debe ser mayor a 0
+      </small>
+    </div>
+
+    <div class="field col-12">
+      <label for="initialQuestion">Pregunta Inicial</label>
+      <textarea id="initialQuestion" pInputTextarea formControlName="initialQuestion" [rows]="3"></textarea>
+      <small class="p-error" *ngIf="form.get('initialQuestion')?.invalid && form.get('initialQuestion')?.touched">
+        La pregunta inicial es requerida
+      </small>
+    </div>
+
+    <div class="field col-12">
+      <label for="ownerConcern">Inquietud del Amo</label>
+      <textarea id="ownerConcern" pInputTextarea formControlName="ownerConcern" [rows]="3"></textarea>
+    </div>
+
+    <div class="field col-12">
+      <label for="personalData">Datos Personales</label>
+      <textarea id="personalData" pInputTextarea formControlName="personalData" [rows]="3"></textarea>
+    </div>
+
+    <div class="field col-12">
+      <label for="pendingQuestion">Pregunta Pendiente</label>
+      <textarea id="pendingQuestion" pInputTextarea formControlName="pendingQuestion" [rows]="3"></textarea>
+    </div>
+
+    <div class="field col-12">
+      <label for="notes">Notas</label>
+      <textarea id="notes" pInputTextarea formControlName="notes" [rows]="3"></textarea>
+    </div>
+
+    <div class="button-container">
+      <p-button type="button" label="Cancelar" (onClick)="onCancel()" styleClass="p-button-secondary"></p-button>
+      <p-button type="submit" label="Guardar" [disabled]="!form.valid"></p-button>
+    </div>
+  </form>
+</p-dialog>
 
 
 <p-toast></p-toast>
