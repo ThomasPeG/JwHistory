@@ -11,7 +11,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { PrimeraVisitaService } from '../../services/primera-visita.service';
 import { AuthService } from '../../services/auth.service';
-import { PrimeraVisita } from '../../models/formularios.model';
+import { Amo } from '../../models/formularios.model';
 import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
 
@@ -44,7 +44,7 @@ export class PrimeraVisitaComponent {
   ];
 
   displayDialog: boolean = false;
-  visitas: PrimeraVisita[] = [];
+  amos: Amo[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -52,8 +52,8 @@ export class PrimeraVisitaComponent {
     private primeraVisitaService: PrimeraVisitaService,
     private authService: AuthService
   ) {
+    this.loadAmos()
     this.form = this.fb.group({
-      userId: [''],
       date: ['', Validators.required],
       nextVisitDate: ['', Validators.required],
       names: ['', Validators.required],
@@ -69,23 +69,20 @@ export class PrimeraVisitaComponent {
   }
 
   onSubmit(): void {
+    console.log(this.form.value)
     if (this.form.valid) {
-
-      const userId = this.authService.getUserId();
-      console.log("DESDE EL COMPONENTE ID",userId);
-
-
-      let visitaData = this.form.value;
-      visitaData.userId = userId;
+      console.log("IN",this.form.value)
       
-      this.primeraVisitaService.crearPrimeraVisita(visitaData).subscribe({
+      this.primeraVisitaService.crearPrimeraVisita(this.form.value).subscribe({
         next: (response) => {
           this.messageService.add({
             severity: 'success',
             summary: 'Éxito',
             detail: 'Visita guardada correctamente'
           });
+          this.loadAmos()
           this.form.reset();
+          this.displayDialog = false;
         },
         error: (error) => {
           console.error('Error al guardar la visita:', error);
@@ -106,19 +103,20 @@ export class PrimeraVisitaComponent {
       summary: 'Cancelado',
       detail: 'Formulario cancelado'
     });
+    this.displayDialog = false;
   }
 
   showDialog(): void {
     this.displayDialog = true;
-    this.loadVisitas();
   }
 
-  loadVisitas(): void {
+  loadAmos(): void {
     const userId = this.authService.getUserId();
     if (userId) {
-      this.primeraVisitaService.obtenerVisitas(userId).subscribe({
-        next: (visitas) => {
-          this.visitas = visitas;
+      this.primeraVisitaService.obtenerAmos(userId).subscribe({
+        next: (amos) => {
+          // Filtrar solo los amos que tienen exactamente una visita
+          this.amos = amos.filter(amo => amo.visit.length === 1);
         },
         error: (error) => {
           console.error('Error al cargar las visitas:', error);

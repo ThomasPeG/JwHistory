@@ -1,16 +1,21 @@
-export interface PrimeraVisita {
+export interface Amo {
   userId: string;
-  date: Date;
   names: string;
-  initialQuestion: string;
-  address: string;
   personType: string;
-  ownerConcern: string;
   personalData: string;
-  pendingQuestion: string;
-  duration: number;
-  notes: string;
-  nextVisitDate: Date;
+  address: string;
+  visit: string[];
+  _id: string
+  
+}
+export interface Visit {
+    date: Date;
+    initialQuestion: string;
+    ownerConcern: string;
+    pendingQuestion: string;
+    duration: number;
+    notes: string;
+    nextVisitDate: Date;
 }
 
 // Modelo para Revisita

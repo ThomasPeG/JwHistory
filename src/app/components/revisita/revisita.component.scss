@@ -18,7 +18,9 @@
 
     .p-dialog-content {
       .revisita-form {
-        padding: 2rem;
+        .field{
+          width: 100%;
+        }
         @extend .form-grid !optional;
       }
     }
@@ -82,4 +84,29 @@
 
 .animate-in {
   animation: fadeIn 0.6s ease-out forwards;
+}
+
+.selected-amo-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 6px;
+
+  .selected-amo-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    i {
+      font-size: 1.2rem;
+    }
+
+    .selected-amo-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+  }
+
+  
 }

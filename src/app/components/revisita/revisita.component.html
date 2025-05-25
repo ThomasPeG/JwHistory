@@ -11,6 +11,7 @@
           <th>Duración</th>
           <th>Tema Analizado</th>
           <th>Tema por Analizar</th>
+          <th>Próxima Visita</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-revisita>
@@ -19,6 +20,7 @@
           <td>{{revisita.duracion}} minutos</td>
           <td>{{revisita.temaAnalizado}}</td>
           <td>{{revisita.temaPorAnalizar}}</td>
+          <td>{{revisita.proximaVisita | date:'dd/MM/yyyy'}}</td>
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
@@ -30,48 +32,129 @@
   </div>
 </div>
 
-<p-dialog [(visible)]="displayDialog" [modal]="true" class="custom-dialog">
-  <form [formGroup]="revisitaForm" class="form-grid">
-    <div class="field col-12 md:col-6">
-      <label for="fecha">Fecha</label>
-      <p-calendar id="fecha" formControlName="fecha" [showIcon]="true"></p-calendar>
-      <small class="p-error" *ngIf="revisitaForm.get('fecha')?.invalid && revisitaForm.get('fecha')?.touched">
+<p-dialog 
+  [(visible)]="displayDialog" 
+  [modal]="true" 
+  [maximizable]="true" 
+  [style]="{ width: '50rem' }" 
+  styleClass="revisita-dialog"
+  [contentStyle]="{ 'padding': '1.5rem' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <ng-template pTemplate="header">
+    <div class="dialog-header">
+      <i class="pi pi-users mr-2"></i>
+      <h2 class="m-0">Amos Guardados</h2>
+    </div>
+  </ng-template>
+  
+  <!-- Botón para mostrar la tabla cuando hay un amo seleccionado -->
+  <div *ngIf="selectedAmo" class="selected-amo-container mb-4">
+    <div class="selected-amo-info">
+      <i class="pi pi-user mr-2"></i>
+      <span class="selected-amo-name">{{selectedAmo.names}}</span>
+    </div>
+    <button pButton type="button" 
+            label="Seleccionar otro amo" 
+            icon="pi pi-sync" 
+            class="p-button-secondary" 
+            (click)="showAmoTable()"></button>
+  </div>
+
+  <!-- Tabla de visitas existentes -->
+  <div class="visitas-list-container mb-4" *ngIf="!selectedAmo || showingTable">
+    <p style="margin: 1rem;">Seleccione un amo para agregar una nueva revisita</p>
+    
+    <!-- Filtro de búsqueda -->
+    <div class="flex justify-content-end mb-3">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input pInputText type="text" (input)="filterTable($event)" placeholder="Buscar por nombre" />
+      </span>
+    </div>
+
+    <p-table [value]="filteredAmos" [paginator]="true" [rows]="5" class="custom-table mb-4">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Fecha</th>
+          <th>Nombres</th>
+          <th>Dirección</th>
+          <th>Tipo de Persona</th>
+          <th>Duración</th>
+          <th>Próxima Visita</th>
+          <th>Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-amo>
+        <tr>
+          <td>{{amo.visit[0].date | date:'dd/MM/yyyy'}}</td>
+          <td>{{amo.names}}</td>
+          <td>{{amo.address}}</td>
+          <td>{{amo.personType}}</td>
+          <td>{{amo.visit[0].duration}} minutos</td>
+          <td>{{amo.visit[0].nextVisitDate | date:'dd/MM/yyyy'}}</td>
+          <td>
+            <button pButton type="button" icon="pi pi-pencil" class="p-button-text" (click)="selectVisit(amo)"></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="text-center">No hay visitas registradas</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <!-- Formulario de revisita -->
+  <form *ngIf="selectedAmo && !showingTable" [formGroup]="form" class="form-grid">
+    <h3>Nueva Visita para {{selectedAmo.names}}</h3>
+
+    <div class="field">
+      <label for="date">Fecha</label>
+      <p-calendar [style]="{ width: '100%' }" id="date" formControlName="date" [showIcon]="true"></p-calendar>
+      <small class="p-error" *ngIf="form.get('date')?.invalid && form.get('date')?.touched">
         La fecha es requerida
       </small>
     </div>
 
-    <div class="field col-12 md:col-6">
-      <label for="duracion">Duración (minutos)</label>
-      <p-inputNumber id="duracion" formControlName="duracion" [min]="1" placeholder="Ingrese la duración"></p-inputNumber>
-      <small class="p-error" *ngIf="revisitaForm.get('duracion')?.invalid && revisitaForm.get('duracion')?.touched">
+    <div class="field">
+      <label for="nextVisitDate">Fecha Próxima Visita</label>
+      <p-calendar [style]="{ width: '100%' }" id="nextVisitDate" formControlName="nextVisitDate" [showIcon]="true"></p-calendar>
+      <small class="p-error" *ngIf="form.get('nextVisitDate')?.invalid && form.get('nextVisitDate')?.touched">
+        La fecha de próxima visita es requerida
+      </small>
+    </div>
+
+    <div class="field">
+      <label for="duration">Duración (minutos)</label>
+      <p-inputNumber [style]="{ width: '100%' }" id="duration" formControlName="duration" [min]="1" [showButtons]="true"></p-inputNumber>
+      <small class="p-error" *ngIf="form.get('duration')?.invalid && form.get('duration')?.touched">
         La duración es requerida y debe ser mayor a 0
       </small>
     </div>
 
-    <div class="field col-12">
-      <label for="temaAnalizado">Tema Analizado</label>
-      <textarea id="temaAnalizado" pInputTextarea formControlName="temaAnalizado" rows="3" placeholder="Describa el tema analizado"></textarea>
-      <small class="p-error" *ngIf="revisitaForm.get('temaAnalizado')?.invalid && revisitaForm.get('temaAnalizado')?.touched">
-        El tema analizado es requerido
-      </small>
+    <div class="field">
+      <label for="ownerConcern">Inquietud del Amo</label>
+      <textarea id="ownerConcern" pInputTextarea formControlName="ownerConcern" rows="3"></textarea>
     </div>
 
-    <div class="field col-12">
-      <label for="temaPorAnalizar">Tema por Analizar</label>
-      <textarea id="temaPorAnalizar" pInputTextarea formControlName="temaPorAnalizar" rows="3" placeholder="Describa el tema para la próxima visita"></textarea>
-      <small class="p-error" *ngIf="revisitaForm.get('temaPorAnalizar')?.invalid && revisitaForm.get('temaPorAnalizar')?.touched">
-        El tema por analizar es requerido
-      </small>
+    <div class="field">
+      <label for="pendingQuestion">Pregunta Pendiente</label>
+      <textarea id="pendingQuestion" pInputTextarea formControlName="pendingQuestion" rows="3"></textarea>
     </div>
 
-    <div class="field col-12">
-      <label for="observaciones">Observaciones</label>
-      <textarea id="observaciones" pInputTextarea formControlName="observaciones" rows="3" placeholder="Ingrese observaciones adicionales"></textarea>
+    <div class="field">
+      <label for="notes">Notas</label>
+      <textarea id="notes" pInputTextarea formControlName="notes" rows="3"></textarea>
     </div>
 
-    <div class="field col-12">
-      <label for="preguntaPendiente">Pregunta Pendiente</label>
-      <textarea id="preguntaPendiente" pInputTextarea formControlName="preguntaPendiente" rows="3" placeholder="Ingrese preguntas pendientes"></textarea>
+    
+
+    <div class="button-container">
+      <button pButton type="submit" label="Guardar" (click)="onSubmit()"></button>
+      <button pButton type="button" label="Cancelar" class="p-button-secondary" (click)="displayDialog = false"></button>
     </div>
   </form>
 </p-dialog>

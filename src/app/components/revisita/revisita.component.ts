@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -11,6 +11,9 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
+import { PrimeraVisitaService } from '../../services/primera-visita.service';
+import { Amo, Visit } from '../../models/formularios.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-revisita',
@@ -32,57 +35,131 @@ import { TableModule } from 'primeng/table';
   templateUrl: './revisita.component.html',
   styleUrls: ['./revisita.component.scss']
 })
-export class RevisitaComponent {
-  revisitaForm: FormGroup;
+export class RevisitaComponent implements OnInit {
+  form: FormGroup;
   displayDialog: boolean = false;
   revisitas: any[] = [];
+  amos: Amo[] = [];
+  selectedAmo: Amo | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private primeraVisitaService: PrimeraVisitaService,
+    private authService: AuthService
   ) {
-    this.revisitaForm = this.fb.group({
-      fecha: ['', Validators.required],
-      duracion: ['', [Validators.required, Validators.min(1)]],
-      temaAnalizado: ['', Validators.required],
-      temaPorAnalizar: ['', Validators.required],
-      observaciones: [''],
-      preguntaPendiente: ['']
+    this.form = this.fb.group({
+      date: ['', Validators.required],
+      nextVisitDate: ['', Validators.required],
+      duration: ['', [Validators.required, Validators.min(1)]],
+      ownerConcern: [''],
+      pendingQuestion: [''],
+      notes: [''],
     });
   }
 
-  onSubmit(): void {
-    if (this.revisitaForm.valid) {
-      console.log('Datos del formulario:', this.revisitaForm.value);
-      
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Éxito',
-        detail: 'Revisita guardada correctamente'
-      });
+  filteredAmos: Amo[] = [];
 
-      this.revisitaForm.reset();
-      this.displayDialog = false;
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Por favor, complete todos los campos requeridos'
+  ngOnInit() {
+    this.loadAmos();
+  }
+
+  filterAmosWithMultipleVisits(amos: Amo[]): void {
+    const amosWithMultipleVisits = amos.filter(amo => amo.visit.length >= 2);
+    this.revisitas = amosWithMultipleVisits.map(amo => {
+      const lastVisit : any = amo.visit[amo.visit.length - 1];
+      return {
+        fecha: lastVisit.date,
+        duracion: lastVisit.duration,
+        temaAnalizado: lastVisit.ownerConcern,
+        temaPorAnalizar: lastVisit.pendingQuestion,
+        proximaVisita: lastVisit.nextVisitDate,
+        totalVisitas: amo.visit.length
+      };
+    });
+  }
+
+  loadAmos(): void {
+    const userId = this.authService.getUserId();
+    if (userId) {
+      this.primeraVisitaService.obtenerAmos(userId).subscribe({
+        next: (amos) => {
+          this.amos = amos;
+          this.filteredAmos = amos;
+          this.filterAmosWithMultipleVisits(amos);
+        },
+        error: (error) => {
+          console.error('Error al cargar las visitas:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error al cargar las visitas'
+          });
+        }
       });
     }
   }
 
-  onCancel(): void {
-    this.revisitaForm.reset();
-    this.displayDialog = false;
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Cancelado',
-      detail: 'Formulario cancelado'
-    });
+  filterTable(event: any): void {
+    const filterValue = event.target.value.toLowerCase();
+    this.filteredAmos = this.amos.filter(amo => 
+      amo.names.toLowerCase().includes(filterValue)
+    );
+  }
+  showingTable: boolean = false;
+
+  showDialog() {
+    this.displayDialog = true;
+    this.selectedAmo = null;
+    this.showingTable = false;
+    this.form.reset();
   }
 
-  showDialog(): void {
-    this.displayDialog = true;
+  selectVisit(amo: Amo) {
+    this.selectedAmo = amo;
+    this.showingTable = false;
+  }
+
+  showAmoTable() {
+    this.showingTable = true;
+    this.selectedAmo = null;
+  }
+
+  onSubmit(): void {
+    if (this.form.valid && this.selectedAmo) {
+      const newVisit: Visit = {
+        date: this.form.value.date,
+        nextVisitDate: this.form.value.nextVisitDate,
+        duration: this.form.value.duration,
+        ownerConcern: this.form.value.ownerConcern,
+        pendingQuestion: this.form.value.pendingQuestion,
+        notes: this.form.value.notes,
+        initialQuestion: '' // Este campo no se usa en revisitas
+      };
+
+      const amoId = this.selectedAmo._id;
+      
+      this.primeraVisitaService.agregarVisita(amoId, newVisit).subscribe({
+        next: (updatedAmo) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Visita guardada correctamente'
+          });
+          this.displayDialog = false;
+          this.form.reset();
+          this.selectedAmo = null;
+          this.loadAmos(); // Recargar la lista de amos
+        },
+        error: (error) => {
+          console.error('Error al guardar la visita:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error al guardar la visita'
+          });
+        }
+      });
+    }
   }
 }
